@@ -4,6 +4,7 @@
 # csslex/__init__.py
 # 
 # tokenizer for a css file
+# Based on: http://www.w3.org/TR/CSS2/syndata.html#tokenization
 # ----------------------------------------------------------------
 # copyright (c) 2014 - Domen Ipavec
 # Distributed under The MIT License, see LICENSE
@@ -18,10 +19,8 @@ re.IGNORECASE = True
 tokens = (
     'IDENT',
     'ATKEYWORD',
+    'ATBRACES',
     'STRING',
-    'BAD_STRING',
-    'BAD_URI',
-    'BAD_COMMENT',
     'HASH',
     'NUMBER',
     'PERCENTAGE',
@@ -38,8 +37,8 @@ tokens = (
     'PARENTHESES_L',
     'BRACKETS_R',
     'BRACKETS_L',
-    'WS',
     'COMMENT',
+    'WS',
     'FUNCTION',
     'INCLUDES',
     'DASHMATCH',
@@ -76,11 +75,12 @@ comment2 = r'\/\/[^\n\r\f]*'
 
 # simple rules
 t_IDENT = flags + ident
-t_ATKEYWORD = flags + r'@(' + ident + ')'
-t_HASH = flags + r'\#(' + name + ')'
+t_ATKEYWORD = flags + r'@+(' + ident + r')'
+t_ATBRACES = flags + r'@\{(' + ident + r')\}'
+t_HASH = flags + r'\#(' + name + r')'
 t_NUMBER = flags + num
 t_PERCENTAGE = flags + r'(' + num + r')%'
-t_DIMENSION = flags + r'(' + num + ')(' + ident + ')'
+t_DIMENSION = flags + r'(' + num + r')(' + ident + r')'
 t_UNICODE_RANGE = flags + r'u\+[0-9a-f?]{1,6}(-[0-9a-f]{1,6})?'
 t_CDO = flags + r'<!--'
 t_CDC = flags + r'-->'
@@ -92,10 +92,10 @@ t_PARENTHESES_L = flags + r'\('
 t_PARENTHESES_R = flags + r'\)'
 t_BRACKETS_L = flags + r'\['
 t_BRACKETS_R = flags + r'\]'
-t_FUNCTION = flags + r'(' + ident + r')\('
+t_FUNCTION = flags + r'((' + ident + r')|%)\('
 t_INCLUDES = flags + r'~='
 t_DASHMATCH = flags + r'\|='
-t_DELIM = flags + r'[,.&*+>=^$-/!~]'
+t_DELIM = flags + r'[,.&*+><=^$\-/!~]'
 
 # functions
 
@@ -143,3 +143,6 @@ def t_error(t):
     
 # build lexer
 lexer = lex.lex()
+
+def getLexer():
+    return lexer.clone()

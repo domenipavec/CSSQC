@@ -16,7 +16,7 @@ setup(
     
     version='0.1',
     
-    packages=['csslex'],
+    packages=['csslex', 'cssyacc'],
     
     test_suite='nose.collector'
 )

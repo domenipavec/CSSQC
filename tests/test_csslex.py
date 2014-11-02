@@ -86,10 +86,11 @@ data = [
 ]
 
 class TestCsslex(unittest.TestCase):
-    def setUp(self):
-        self.lexer = csslex.lexer
+    def build_lexer(self):
+        self.lexer = csslex.getLexer()
     
     def perform(self, i):
+        self.build_lexer()
         self.lexer.input(data[i]['css'])
         for j,token in enumerate(self.lexer):
             print(token)
@@ -112,6 +113,7 @@ class TestCsslex(unittest.TestCase):
         self.perform(4)
     
     def test_csslex_benchmark(self):
+        self.build_lexer()
         f = open("./examples/benchmark.less", 'r')
         self.lexer.input(f.read())
         for token in self.lexer:
