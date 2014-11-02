@@ -14,6 +14,7 @@ import ply.yacc as yacc
 from csslex import tokens
 
 from cssyacc.whitespace import Whitespace
+from cssyacc.comment import Comment
 from cssyacc.statement import Statement
 from cssyacc.parentheses import Parentheses
 from cssyacc.block import Block
@@ -27,11 +28,20 @@ def p_stylesheet(p):
                   | stylesheet CDO
                   | stylesheet CDC
                   | stylesheet ws
+                  | stylesheet comment
                   | stylesheet element'''
     if len(p) == 2:
-        p[0] = [p[1]]
+        p[0] = []
     else:
         p[0] = p[1] + [p[2]]
+
+def p_comment(p):
+    '''comment : COMMENT'''
+    p[0] = Comment(p[1])
+
+def p_ws(p):
+    '''ws : WS'''
+    p[0] = Whitespace(p[1])
 
 def p_block(p):
     '''block : BRACES_L elements text BRACES_R'''
@@ -40,7 +50,7 @@ def p_block(p):
 def p_element(p):
     '''element : text block
                | text SEMICOLON'''
-    if p[2] == ';':
+    if type(p[2]) is str:
         p[0] = Statement(p[1])
     else:
         p[0] = Ruleset(p[1], p[2])
@@ -48,6 +58,7 @@ def p_element(p):
 def p_elements(p):
     '''elements : elements element
                 | elements ws
+                | elements comment
                 | empty'''
     if len(p) == 2:
         p[0] = []
@@ -55,61 +66,91 @@ def p_elements(p):
         p[0] = p[1] + [p[2]]
 
 def p_text(p):
-    '''text : IDENT text
-            | ATKEYWORD text
-            | ATBRACES text
-            | COLON text
-            | HASH text
-            | DELIM text
-            | NUMBER text
-            | DIMENSION text
-            | PERCENTAGE text
-            | URI text
-            | STRING text
-            | UNICODE_RANGE text
-            | INCLUDES text
-            | DASHMATCH text
-            | function text
-            | parentheses text
-            | brackets text
-            | ws text
+    '''text : IDENT textsuffix
+            | ATKEYWORD textsuffix
+            | ATBRACES textsuffix
+            | COLON textsuffix
+            | HASH textsuffix
+            | DELIM textsuffix
+            | NUMBER textsuffix
+            | DIMENSION textsuffix
+            | PERCENTAGE textsuffix
+            | URI textsuffix
+            | STRING textsuffix
+            | UNICODE_RANGE textsuffix
+            | INCLUDES textsuffix
+            | DASHMATCH textsuffix
+            | function textsuffix
+            | parentheses textsuffix
+            | brackets textsuffix
             | empty'''
     if len(p) == 2:
         p[0] = []
     else:
         p[0] = [p[1]] + p[2]
 
+def p_textsuffix(p):
+    '''textsuffix : IDENT textsuffix
+                  | ATKEYWORD textsuffix
+                  | ATBRACES textsuffix
+                  | COLON textsuffix
+                  | HASH textsuffix
+                  | DELIM textsuffix
+                  | NUMBER textsuffix
+                  | DIMENSION textsuffix
+                  | PERCENTAGE textsuffix
+                  | URI textsuffix
+                  | STRING textsuffix
+                  | UNICODE_RANGE textsuffix
+                  | INCLUDES textsuffix
+                  | DASHMATCH textsuffix
+                  | function textsuffix
+                  | parentheses textsuffix
+                  | brackets textsuffix
+                  | ws textsuffix
+                  | comment textsuffix
+                  | empty'''
+    if len(p) == 2:
+        p[0] = []
+    else:
+        p[0] = [p[1]] + p[2]
+
 def p_parentheses(p):
-    '''parentheses : PARENTHESES_L ptext PARENTHESES_R'''
-    p[0] = Parentheses(p[2])
+    '''parentheses : PARENTHESES_L ptext PARENTHESES_R
+                   | PARENTHESES_L ws ptext PARENTHESES_R'''
+    if len(p) == 4:
+        p[0] = Parentheses(p[2])
+    else:
+        p[0] = Parentheses([p[2]] + p[3])
 
 def p_brackets(p):
-    '''brackets : BRACKETS_L text BRACKETS_R'''
-    p[0] = Brackets(p[2])
+    '''brackets : BRACKETS_L text BRACKETS_R
+                | BRACKETS_L ws text BRACKETS_R'''
+    if len(p) == 4:
+        p[0] = Brackets(p[2])
+    else:
+        p[0] = Brackets([p[2]] + p[3])
 
 def p_ptext(p):
     '''ptext : text
-             | ptext SEMICOLON text
+             | ptext SEMICOLON textsuffix
              | block'''
     if type(p[1]) is list:
         if len(p) == 2:
             p[0] = p[1]
         else:
-            p[0] = p[1] + p[3]
+            p[0] = p[1] + [p[2]] + p[3]
     else:
         p[0] = [p[1]]
     
 
 def p_function(p):
-    '''function : FUNCTION ptext PARENTHESES_R'''
-    p[0] = Function(p[1], p[2])
-
-def p_ws(p):
-    '''ws : COMMENT
-          | COMMENT ws
-          | WS
-          | WS ws'''
-    p[0] = Whitespace(p[1])
+    '''function : FUNCTION ptext PARENTHESES_R
+                | FUNCTION ws ptext PARENTHESES_R'''
+    if len(p) == 4:
+        p[0] = Function(p[1], p[2])
+    else:
+        p[0] = Function(p[1], [p[2]] + p[3])
 
 def p_empty(p):
     'empty :'

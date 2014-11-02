@@ -15,15 +15,20 @@ class Ruleset:
             self.name = []
         else:
             self.name = n
-        self.block = b.text
+        self.block = b
     
     def __str__(self):
-        return ''.join(map(str, self.name)) + ': ' + ''.join(map(str, self.block))
+        return ''.join(map(str, self.name)) + ': ' + str(self.block)
     
     def __len__(self):
         return len(self.block)
-    
+
+    def __eq__(self, other):
+        if type(self) != type(other):
+            return False
+        return self.name == other.name and self.block == other.block
+
     def __repr__(self):
         return '<Ruleset>\n    <Name>\n        ' + '\n        '.join(map(repr, self.name)) \
-            + '\n    </Name>\n' + '\n        '.join(map(repr, self.block)) + '\n</Ruleset>'
+            + '\n    </Name>\n' + repr(self.block) + '\n</Ruleset>'
         

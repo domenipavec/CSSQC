@@ -1,32 +1,28 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 # ----------------------------------------------------------------
-# cssyacc/statement.py
+# cssyacc/comment.py
 # 
-# class for statement
+# class for comment
 # ----------------------------------------------------------------
 # copyright (c) 2014 - Domen Ipavec
 # Distributed under The MIT License, see LICENSE
 # ----------------------------------------------------------------
 
-class Statement:
-    def __init__(self, t):
-        if t is None:
-            self.text = []
-        else:
-            self.text = t
+class Comment:
+    def __init__(self, v):
+        self.value = v
     
     def __str__(self):
-        return ''.join(map(str, self.text))
+        return self.value
     
     def __len__(self):
-        return len(self.text)
-    
+        return len(self.value)
+
     def __eq__(self, other):
         if type(self) != type(other):
             return False
-        return self.text == other.text    
-  
+        return self.value == other.value
+
     def __repr__(self):
-        return '<Statement>\n    ' + '\n    '.join(map(repr, self.text)) + '\n</Statement>'
-        
+        return '<Comment>\n' + self.value + '\n</Comment>'

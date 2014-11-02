@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 # ----------------------------------------------------------------
-# cssyacc/parentheses.py
+# cssyacc/function.py
 # 
-# class for parentheses
+# class for function
 # ----------------------------------------------------------------
 # copyright (c) 2014 - Domen Ipavec
 # Distributed under The MIT License, see LICENSE
@@ -22,11 +22,16 @@ class Function:
             self.text = t
     
     def __str__(self):
-        return ''.join(map(str, self.name)) + ''.join(map(str, text)) + ')'
+        return ''.join(map(str, self.name)) + ''.join(map(str, self.text)) + ')'
     
     def __len__(self):
         return len(self.text)
-    
+
+    def __eq__(self, other):
+        if type(self) != type(other):
+            return False
+        return self.text == other.text and self.name == other.name
+
     def __repr__(self):
         return '<Function>\n    <Name>        \n' \
             + '\n        '.join(map(repr, self.name)) \

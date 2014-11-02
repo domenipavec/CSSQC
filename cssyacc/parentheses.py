@@ -21,7 +21,12 @@ class Parentheses:
     
     def __len__(self):
         return len(self.text)
-    
+
+    def __eq__(self, other):
+        if type(self) != type(other):
+            return False
+        return self.text == other.text
+
     def __repr__(self):
         return '<Parentheses>\n    ' + '\n    '.join(map(repr, self.text)) + '\n</Parentheses>'
         

@@ -22,6 +22,11 @@ class Whitespace:
     def __len__(self):
         return len(self.value)
     
+    def __eq__(self, other):
+        if type(self) != type(other):
+            return False
+        return self.value == other.value
+    
     def __repr__(self):
         if self.value == '':
             return '<Whitespace>'
