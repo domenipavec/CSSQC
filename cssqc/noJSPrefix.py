@@ -17,13 +17,13 @@ class noJSPrefix:
 
     def on_IDENT(self, i):
         if i.value[0:3] == "js-":
-            return [QualityWarning('noJSPrefix', i.lineno)]
+            return [QualityWarning('noJSPrefix', i.lineno, 'Class ".%s" present.' % i.value)]
         else:
             return []
 
     def on_HASH(self, i):
         if i.value[1:4] == "js-":
-            return [QualityWarning('noJSPrefix', i.lineno)]
+            return [QualityWarning('noJSPrefix', i.lineno, 'ID "%s" present.' % i.value)]
         else:
             return []
 
