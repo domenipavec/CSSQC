@@ -18,5 +18,7 @@ setup(
     
     packages=['csslex', 'cssyacc'],
     
-    test_suite='nose.collector'
+    test_suite='nose.collector',
+    
+    install_requires=['nose', 'ply']
 )
