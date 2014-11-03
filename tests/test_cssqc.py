@@ -69,3 +69,4 @@ div#id1.cl1 { }''')
             QualityWarning('noIDs', 2),
             QualityWarning('noIDs', 3)
         ])
+

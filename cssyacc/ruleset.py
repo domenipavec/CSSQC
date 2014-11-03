@@ -9,6 +9,8 @@
 # Distributed under The MIT License, see LICENSE
 # ----------------------------------------------------------------
 
+import cssqc
+
 class Ruleset:
     def __init__(self, n, b):
         if n is None:
@@ -16,6 +18,8 @@ class Ruleset:
         else:
             self.name = n
         self.block = b
+        if cssqc.instance is not None:
+            cssqc.instance.event('Ruleset', self)
     
     def __str__(self):
         return ''.join(map(str, self.name)) + ': ' + str(self.block)
