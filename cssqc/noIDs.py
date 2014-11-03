@@ -12,7 +12,7 @@
 from cssqc import QualityWarning
 
 class noIDs:
-    def __init__(self):
+    def __init__(self, data):
         pass
 
     def on_Ruleset(self, rs):

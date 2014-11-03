@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 # ----------------------------------------------------------------
-# test_noIDs.py
+# test_noJSPrefix.py
 # 
-# test for noIDs rule
+# test for noJSPrefix rule
 # ----------------------------------------------------------------
 # copyright (c) 2014 - Domen Ipavec
 # Distributed under The MIT License, see LICENSE
@@ -14,7 +14,7 @@ from cssqc import CSSQC, QualityWarning
 
 class Test_noJSPrefix(unittest.TestCase):
     def parse(self, data):
-        c = CSSQC(["noJSPrefix"])
+        c = CSSQC({"noJSPrefix": True})
         c.parse(data)
         return c
     

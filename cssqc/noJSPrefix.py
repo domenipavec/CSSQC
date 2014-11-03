@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 # ----------------------------------------------------------------
-# cssqc/noIDs.py
+# cssqc/noJSPrefix.py
 # 
-# Do not allow IDs in selectors.
+# Do not allow js- prefixes in selectors.
 # ----------------------------------------------------------------
 # copyright (c) 2014 - Domen Ipavec
 # Distributed under The MIT License, see LICENSE
@@ -12,7 +12,7 @@
 from cssqc import QualityWarning
 
 class noJSPrefix:
-    def __init__(self):
+    def __init__(self, data):
         pass
 
     def on_IDENT(self, i):

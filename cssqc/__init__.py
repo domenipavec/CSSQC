@@ -66,9 +66,10 @@ class CSSQC:
     
     def addRules(self, rules):
         for rule in rules:
-            module = importlib.import_module("cssqc."+rule)
-            klass = getattr(module, rule)
-            self.addRuleObject(klass())
+            if rules[rule]:
+                module = importlib.import_module("cssqc."+rule)
+                klass = getattr(module, rule)
+                self.addRuleObject(klass(rules[rule]))
     
     def eventName(self, e):
         return "on_"+e

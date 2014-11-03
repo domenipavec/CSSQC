@@ -14,7 +14,7 @@ from cssqc import CSSQC, QualityWarning
 
 class Test_noIDs(unittest.TestCase):
     def parse(self, data):
-        c = CSSQC(["noIDs"])
+        c = CSSQC({"noIDs": True})
         c.parse(data)
         return c
     
