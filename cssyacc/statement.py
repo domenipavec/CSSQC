@@ -10,7 +10,8 @@
 # ----------------------------------------------------------------
 
 class Statement:
-    def __init__(self, t):
+    def __init__(self, t, ln):
+        self.lineno = ln
         if t is None:
             self.text = []
         else:
@@ -25,7 +26,8 @@ class Statement:
     def __eq__(self, other):
         if type(self) != type(other):
             return False
-        return self.text == other.text    
+        return self.text == other.text \
+            and self.lineno == other.lineno
   
     def __repr__(self):
         return '<Statement>\n    ' + '\n    '.join(map(repr, self.text)) + '\n</Statement>'

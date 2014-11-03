@@ -10,7 +10,9 @@
 # ----------------------------------------------------------------
 
 class Brackets:
-    def __init__(self, t):
+    def __init__(self, t, ln1, ln2):
+        self.lb_lineno = ln1
+        self.rb_lineno = ln2
         if t is None:
             self.text = []
         else:
@@ -25,7 +27,9 @@ class Brackets:
     def __eq__(self, other):
         if type(self) != type(other):
             return False
-        return self.text == other.text
+        return self.text == other.text \
+            and self.lb_lineno == other.lb_lineno \
+            and self.rb_lineno == other.rb_lineno
 
     def __repr__(self):
         return '<Brackets>\n    ' + '\n    '.join(map(repr, self.text)) + '\n</Brackets>'

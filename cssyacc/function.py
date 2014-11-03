@@ -10,7 +10,9 @@
 # ----------------------------------------------------------------
 
 class Function:
-    def __init__(self, n, t):
+    def __init__(self, n, t, ln1, ln2):
+        self.name_lineno = ln1
+        self.rp_lineno = ln2
         if n is None:
             self.name = []
         else:
@@ -30,7 +32,10 @@ class Function:
     def __eq__(self, other):
         if type(self) != type(other):
             return False
-        return self.text == other.text and self.name == other.name
+        return self.text == other.text \
+            and self.name == other.name \
+            and self.name_lineno == other.name_lineno \
+            and self.rp_lineno == other.rp_lineno
 
     def __repr__(self):
         return '<Function>\n    <Name>        \n' \

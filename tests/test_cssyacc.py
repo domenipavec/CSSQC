@@ -15,6 +15,8 @@ import pprint
 import cssyacc
 import csslex
 
+from nose.tools import nottest
+
 from cssyacc.whitespace import Whitespace
 from cssyacc.comment import Comment
 from cssyacc.statement import Statement
@@ -45,28 +47,30 @@ class TestCssyacc(unittest.TestCase):
         self.assertEqual(result,r)
         return result
     
+    @nottest
     def test_cssyacc_benchmark(self):
         self.build_parser()
         f = open("./examples/benchmark.less", 'r')
         result = self.parser.parse(f.read(), lexer=self.lexer)
         f.close()
         print(result)
+    test_cssyacc_benchmark.slow = 1
 
     def test_cssyacc_empty(self):
         self.parse('', [])
     
     def test_cssyacc_ws(self):
-        self.parse('\n  \n', [Whitespace('\n  \n')])
+        self.parse('\n  \n', [Whitespace('\n  \n', 1)])
     
     def test_cssyacc_comment(self):
         self.parse('''
 /* comment */// test 
 ''', \
             [
-                Whitespace('\n'),
-                Comment('/* comment */'),
-                Comment('// test '),
-                Whitespace('\n')
+                Whitespace('\n', 1),
+                Comment('/* comment */', 2),
+                Comment('// test ', 2),
+                Whitespace('\n', 2)
             ])
 
     def test_cssyacc_statement(self):
@@ -74,10 +78,10 @@ class TestCssyacc(unittest.TestCase):
 @nice-blue: #5883AD;
 ''', \
             [
-                Comment('/* statement */'),
-                Whitespace('\n'),
-                Statement(['@nice-blue', ':', Whitespace(' '), '#5883AD']),
-                Whitespace('\n')
+                Comment('/* statement */', 1),
+                Whitespace('\n', 1),
+                Statement([('@nice-blue',2), (':',2), Whitespace(' ',2), ('#5883AD',2)], 2),
+                Whitespace('\n', 2)
             ])
     
     def test_cssyacc_multiline_statement(self):
@@ -85,17 +89,17 @@ class TestCssyacc(unittest.TestCase):
 0 0;''', \
             [
                 Statement([
-                    'margin',
-                    ':',
-                    Whitespace(' '),
-                    '0',
-                    Whitespace(' '),
-                    '0',
-                    Whitespace('\n'),
-                    '0',
-                    Whitespace(' '),
-                    '0'
-                ])
+                    ('margin',1),
+                    (':',1),
+                    Whitespace(' ',1),
+                    ('0',1),
+                    Whitespace(' ',1),
+                    ('0',1),
+                    Whitespace('\n',1),
+                    ('0',2),
+                    Whitespace(' ',2),
+                    ('0',2)
+                ], 2)
             ])
     
     def test_cssyacc_ruleset(self):
@@ -103,69 +107,69 @@ class TestCssyacc(unittest.TestCase):
     border: none;
 } // comment''', \
             [
-                Whitespace(' '),
-                Ruleset(['img', Brackets(['src', '^', '=', '"alert"']), Whitespace(' ')], Block([
-                    Whitespace('\n    '), 
-                    Statement(['border', ':', Whitespace(' '), 'none']),
-                    Whitespace('\n')
-                ], None)),
-                Whitespace(' '),
-                Comment('// comment')
+                Whitespace(' ',1),
+                Ruleset([('img',1), Brackets([('src',1), ('^',1), ('=',1), ('"alert"',1)],1,1), Whitespace(' ',1)], Block([
+                    Whitespace('\n    ',1), 
+                    Statement([('border',2), (':',2), Whitespace(' ',2), ('none',2)], 2),
+                    Whitespace('\n', 2)
+                ], None, 1, 3)),
+                Whitespace(' ', 3),
+                Comment('// comment', 3)
             ])
 
     def test_cssyacc_mixin(self):
         self.parse('''.mixin-class {
   .a( );
 }''',   [
-            Ruleset(['.', 'mixin-class', Whitespace(' ')], Block([
-                Whitespace('\n  '),
-                Statement(['.', Function('a(', [Whitespace(' ')])]),
-                Whitespace('\n')
-            ], None))
+            Ruleset([('.',1), ('mixin-class',1), Whitespace(' ',1)], Block([
+                Whitespace('\n  ', 1),
+                Statement([('.',2), Function('a(', [Whitespace(' ',2)], 2, 2)], 2),
+                Whitespace('\n', 2)
+            ], None, 1, 3))
         ])
     
     def test_cssyacc_fulltext_statement(self):
         self.parse('''margin@red@{z3}@@dve:#hash.d30 30px 30% url('test')
 "str", ( ...;...)[ 3]/* comment */;''', [
             Statement([
-                'margin',
-                '@red',
-                '@{z3}',
-                '@@dve',
-                ':',
-                '#hash',
-                '.',
-                'd30',
-                Whitespace(' '),
-                '30px',
-                Whitespace(' '),
-                '30%',
-                Whitespace(' '),
-                "url('test')",
-                Whitespace('\n'),
-                '"str"',
-                ',',
-                Whitespace(' '),
-                Parentheses([Whitespace(' '), '.', '.', '.', ';', '.', '.', '.']),
-                Brackets([Whitespace(' '), '3']),
-                Comment('/* comment */')
-            ])
+                ('margin',1),
+                ('@red',1),
+                ('@{z3}',1),
+                ('@@dve',1),
+                (':',1),
+                ('#hash',1),
+                ('.',1),
+                ('d30',1),
+                Whitespace(' ',1),
+                ('30px',1),
+                Whitespace(' ',1),
+                ('30%',1),
+                Whitespace(' ',1),
+                ("url('test')",1),
+                Whitespace('\n',1),
+                ('"str"',2),
+                (',',2),
+                Whitespace(' ',2),
+                Parentheses([Whitespace(' ',2), ('.',2), ('.',2), ('.',2), (';',2), ('.',2), ('.',2), ('.',2)], 2, 2),
+                Brackets([Whitespace(' ',2), ('3',2)], 2, 2),
+                Comment('/* comment */', 2)
+            ], 2)
         ])
     
     def test_cssyacc_block(self):
         r = self.parse('''body{margin:0;padding:0}''', [
-            Ruleset(['body'], Block([
-                Statement(['margin', ':', '0'])
+            Ruleset([('body',1)], Block([
+                Statement([('margin',1), (':',1), ('0',1)], 1)
             ], [
-                'padding', 
-                ':', 
-                '0'
-            ]))
+                ('padding', 1), 
+                (':', 1), 
+                ('0', 1)
+            ], 1, 1))
         ])
         self.assertNotEqual(r, [
-            Ruleset(['body'], Block([
-                Statement(['margin', ':', '0'])
-            ], None))
+            Ruleset([('body',1)], Block([
+                Statement([('margin',1), (':',1), ('0',1)], 1)
+            ], None, 1, 1))
         ])
 
     def test_cssyacc_block_parameter(self):
@@ -176,20 +180,20 @@ class TestCssyacc(unittest.TestCase):
     background-color: red;
   });
 }''',   [
-            Ruleset(['header', Whitespace(' ')], Block([
-                Whitespace('\n  '),
-                Statement(['background-color', ':', Whitespace(' '), 'blue']),
-                Whitespace('\n\n  '),
-                Statement(['.', Function('desktop-and-old-ie(', [
-                    Whitespace(' '),
+            Ruleset([('header',1), Whitespace(' ', 1)], Block([
+                Whitespace('\n  ', 1),
+                Statement([('background-color',2), (':',2), Whitespace(' ',2), ('blue',2)], 2),
+                Whitespace('\n\n  ', 2),
+                Statement([('.',4), Function('desktop-and-old-ie(', [
+                    Whitespace(' ', 4),
                     Block([
-                        Whitespace('\n    '),
-                        Statement(['background-color', ':', Whitespace(' '), 'red']),
-                        Whitespace('\n  ')
-                    ], None)
-                ])]),
-                Whitespace('\n')
-            ], None))
+                        Whitespace('\n    ', 4),
+                        Statement([('background-color', 5), (':',5), Whitespace(' ', 5), ('red',5)], 5),
+                        Whitespace('\n  ', 5)
+                    ], None, 4, 6)
+                ], 4, 6)], 6),
+                Whitespace('\n', 6)
+            ], None, 1, 7))
         ])
     
     def test_cssyacc_mixin_guard(self):
@@ -200,59 +204,59 @@ class TestCssyacc(unittest.TestCase):
   background-color: white;
 }''',   [
             Ruleset([
-                '.',
-                'mixin',
-                Whitespace(' '),
-                Parentheses(['@a']),
-                Whitespace(' '),
-                'when',
-                Whitespace(' '),
+                ('.',1),
+                ('mixin',1),
+                Whitespace(' ',1),
+                Parentheses([('@a',1)], 1, 1),
+                Whitespace(' ', 1),
+                ('when',1),
+                Whitespace(' ', 1),
                 Parentheses([
-                    Function('lightness(', ['@a']),
-                    Whitespace(' '),
-                    '>',
-                    '=',
-                    Whitespace(' '),
-                    '50%'
-                ]),
-                Whitespace(' ')
+                    Function('lightness(', [('@a',1)], 1, 1),
+                    Whitespace(' ', 1),
+                    ('>',1),
+                    ('=',1),
+                    Whitespace(' ', 1),
+                    ('50%',1)
+                ], 1, 1),
+                Whitespace(' ', 1)
             ], Block([
-                Whitespace('\n  '),
+                Whitespace('\n  ',1),
                 Statement([
-                    'background-color',
-                    ':', 
-                    Whitespace(' '),
-                    'black'
-                ]),
-                Whitespace('\n')
-            ], None)),
-            Whitespace('\n'),
+                    ('background-color',2),
+                    (':',2), 
+                    Whitespace(' ',2),
+                    ('black',2)
+                ],2),
+                Whitespace('\n',2)
+            ], None, 1,3)),
+            Whitespace('\n',3),
             Ruleset([
-                '.',
-                'mixin',
-                Whitespace(' '),
-                Parentheses(['@a']),
-                Whitespace(' '),
-                'when',
-                Whitespace(' '),
+                ('.',4),
+                ('mixin',4),
+                Whitespace(' ',4),
+                Parentheses([('@a',4)], 4, 4),
+                Whitespace(' ', 4),
+                ('when', 4),
+                Whitespace(' ', 4),
                 Parentheses([
-                    Function('lightness(', ['@a']),
-                    Whitespace(' '),
-                    '<',
-                    Whitespace(' '),
-                    '50%'
-                ]),
-                Whitespace(' ')
+                    Function('lightness(', [('@a',4)], 4, 4),
+                    Whitespace(' ', 4),
+                    ('<',4),
+                    Whitespace(' ',4),
+                    ('50%',4)
+                ], 4, 4),
+                Whitespace(' ', 4)
             ], Block([
-                Whitespace('\n  '),
+                Whitespace('\n  ', 4),
                 Statement([
-                    'background-color',
-                    ':', 
-                    Whitespace(' '),
-                    'white'
-                ]),
-                Whitespace('\n')
-            ], None))
+                    ('background-color',5),
+                    (':',5), 
+                    Whitespace(' ',5),
+                    ('white',5)
+                ], 5),
+                Whitespace('\n', 5)
+            ], None, 4, 6))
         ])
 
     def test_cssyacc_nesting(self):
@@ -265,21 +269,21 @@ class TestCssyacc(unittest.TestCase):
     width: 300px;
   }
 }''',   [
-            Ruleset(['#header', Whitespace(' ')], Block([
-                Whitespace('\n  '),
-                Statement(['color', ':', Whitespace(' '), 'black']),
-                Whitespace('\n  '),
-                Ruleset(['.', 'navigation', Whitespace(' ')], Block([
-                    Whitespace('\n    '),
-                    Statement(['font-size', ':', Whitespace(' '), '12px']),
-                    Whitespace('\n  ')
-                ], None)),
-                Whitespace('\n  '),
-                Ruleset(['.', 'logo', Whitespace(' ')], Block([
-                    Whitespace('\n    '),
-                    Statement(['width', ':', Whitespace(' '), '300px']),
-                    Whitespace('\n  ')
-                ], None)),
-                Whitespace('\n')
-            ], None))
+            Ruleset([('#header',1), Whitespace(' ',1)], Block([
+                Whitespace('\n  ', 1),
+                Statement([('color',2), (':',2), Whitespace(' ',2), ('black',2)], 2),
+                Whitespace('\n  ', 2),
+                Ruleset([('.',3), ('navigation',3), Whitespace(' ', 3)], Block([
+                    Whitespace('\n    ', 3),
+                    Statement([('font-size',4), (':',4), Whitespace(' ', 4), ('12px',4)], 4),
+                    Whitespace('\n  ', 4)
+                ], None, 3, 5)),
+                Whitespace('\n  ', 5),
+                Ruleset([('.',6), ('logo',6), Whitespace(' ', 6)], Block([
+                    Whitespace('\n    ', 6),
+                    Statement([('width',7), (':',7), Whitespace(' ', 7), ('300px',7)], 7),
+                    Whitespace('\n  ', 7)
+                ], None, 6, 8)),
+                Whitespace('\n', 8)
+            ], None, 1, 9))
         ])

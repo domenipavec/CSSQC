@@ -10,7 +10,8 @@
 # ----------------------------------------------------------------
 
 class Whitespace:
-    def __init__(self, v):
+    def __init__(self, v, ln):
+        self.lineno = ln
         if v is None:
             self.value = ''
         else:
@@ -25,7 +26,8 @@ class Whitespace:
     def __eq__(self, other):
         if type(self) != type(other):
             return False
-        return self.value == other.value
+        return self.value == other.value \
+            and self.lineno == other.lineno
     
     def __repr__(self):
         if self.value == '':

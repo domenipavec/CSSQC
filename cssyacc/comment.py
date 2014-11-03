@@ -10,8 +10,9 @@
 # ----------------------------------------------------------------
 
 class Comment:
-    def __init__(self, v):
+    def __init__(self, v, ln):
         self.value = v
+        self.lineno = ln
     
     def __str__(self):
         return self.value
@@ -22,7 +23,8 @@ class Comment:
     def __eq__(self, other):
         if type(self) != type(other):
             return False
-        return self.value == other.value
+        return self.value == other.value \
+            and self.lineno == other.lineno
 
     def __repr__(self):
         return '<Comment>\n' + self.value + '\n</Comment>'

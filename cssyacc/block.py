@@ -12,8 +12,10 @@
 from cssyacc.statement import Statement
 
 class Block:
-    def __init__(self, el, t):
+    def __init__(self, el, t, ln1, ln2):
         self.text = el
+        self.lb_lineno = ln1
+        self.rb_lineno = ln2
         if t is None:
             self.last = []
         else:
@@ -28,7 +30,10 @@ class Block:
     def __eq__(self, other):
         if type(self) != type(other):
             return False
-        return self.text == other.text and self.last == other.last
+        return self.text == other.text \
+            and self.last == other.last \
+            and self.lb_lineno == other.lb_lineno \
+            and self.rb_lineno == other.rb_lineno
 
     def __repr__(self):
         return '<Block>\n    ' + '\n    '.join(map(repr, self.text)) + '\n</Block>'

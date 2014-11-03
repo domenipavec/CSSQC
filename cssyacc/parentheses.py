@@ -10,7 +10,9 @@
 # ----------------------------------------------------------------
 
 class Parentheses:
-    def __init__(self, t):
+    def __init__(self, t, ln1, ln2):
+        self.lp_lineno = ln1
+        self.rp_lineno = ln2
         if t is None:
             self.text = []
         else:
@@ -25,7 +27,10 @@ class Parentheses:
     def __eq__(self, other):
         if type(self) != type(other):
             return False
-        return self.text == other.text
+        return self.text == other.text \
+            and self.lp_lineno == other.lp_lineno \
+            and self.rp_lineno == other.rp_lineno
+
 
     def __repr__(self):
         return '<Parentheses>\n    ' + '\n    '.join(map(repr, self.text)) + '\n</Parentheses>'

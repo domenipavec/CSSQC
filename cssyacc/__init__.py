@@ -37,21 +37,21 @@ def p_stylesheet(p):
 
 def p_comment(p):
     '''comment : COMMENT'''
-    p[0] = Comment(p[1])
+    p[0] = Comment(p[1], p.lineno(1))
 
 def p_ws(p):
     '''ws : WS'''
-    p[0] = Whitespace(p[1])
+    p[0] = Whitespace(p[1], p.lineno(1))
 
 def p_block(p):
     '''block : BRACES_L elements text BRACES_R'''
-    p[0] = Block(p[2], p[3])
+    p[0] = Block(p[2], p[3], p.lineno(1), p.lineno(4))
 
 def p_element(p):
     '''element : text block
                | text SEMICOLON'''
     if type(p[2]) is str:
-        p[0] = Statement(p[1])
+        p[0] = Statement(p[1], p.lineno(2))
     else:
         p[0] = Ruleset(p[1], p[2])
 
@@ -87,7 +87,10 @@ def p_text(p):
     if len(p) == 2:
         p[0] = []
     else:
-        p[0] = [p[1]] + p[2]
+        if type(p[1]) is str:
+            p[0] = [(p[1], p.lineno(1))] + p[2]
+        else:
+            p[0] = [p[1]] + p[2]
 
 def p_textsuffix(p):
     '''textsuffix : IDENT textsuffix
@@ -113,23 +116,26 @@ def p_textsuffix(p):
     if len(p) == 2:
         p[0] = []
     else:
-        p[0] = [p[1]] + p[2]
+        if type(p[1]) is str:
+            p[0] = [(p[1], p.lineno(1))] + p[2]
+        else:
+            p[0] = [p[1]] + p[2]
 
 def p_parentheses(p):
     '''parentheses : PARENTHESES_L ptext PARENTHESES_R
                    | PARENTHESES_L ws ptext PARENTHESES_R'''
     if len(p) == 4:
-        p[0] = Parentheses(p[2])
+        p[0] = Parentheses(p[2], p.lineno(1), p.lineno(3))
     else:
-        p[0] = Parentheses([p[2]] + p[3])
+        p[0] = Parentheses([p[2]] + p[3], p.lineno(1), p.lineno(4))
 
 def p_brackets(p):
     '''brackets : BRACKETS_L text BRACKETS_R
                 | BRACKETS_L ws text BRACKETS_R'''
     if len(p) == 4:
-        p[0] = Brackets(p[2])
+        p[0] = Brackets(p[2], p.lineno(1), p.lineno(3))
     else:
-        p[0] = Brackets([p[2]] + p[3])
+        p[0] = Brackets([p[2]] + p[3], p.lineno(1), p.lineno(4))
 
 def p_ptext(p):
     '''ptext : text
@@ -139,7 +145,7 @@ def p_ptext(p):
         if len(p) == 2:
             p[0] = p[1]
         else:
-            p[0] = p[1] + [p[2]] + p[3]
+            p[0] = p[1] + [(p[2], p.lineno(2))] + p[3]
     else:
         p[0] = [p[1]]
     
@@ -148,9 +154,9 @@ def p_function(p):
     '''function : FUNCTION ptext PARENTHESES_R
                 | FUNCTION ws ptext PARENTHESES_R'''
     if len(p) == 4:
-        p[0] = Function(p[1], p[2])
+        p[0] = Function(p[1], p[2], p.lineno(1), p.lineno(3))
     else:
-        p[0] = Function(p[1], [p[2]] + p[3])
+        p[0] = Function(p[1], [p[2]] + p[3], p.lineno(1), p.lineno(4))
 
 def p_empty(p):
     'empty :'

@@ -13,6 +13,8 @@ import unittest
 import ply.lex as lex
 import csslex
 
+from nose.tools import nottest
+
 data = [
     # sample
     {
@@ -112,6 +114,7 @@ class TestCsslex(unittest.TestCase):
     def test_csslex_delims(self):
         self.perform(4)
     
+    @nottest
     def test_csslex_benchmark(self):
         self.build_lexer()
         f = open("./examples/benchmark.less", 'r')
