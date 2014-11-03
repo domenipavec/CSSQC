@@ -57,6 +57,7 @@ class CSSQC:
         self.events = {}
         for e in EVENTS:
             self.events[e] = []
+        self.afterParse = []
         self.addRules(rules)
         self.parser = cssyacc.parser
         self.warnings = []
@@ -79,6 +80,9 @@ class CSSQC:
             f = getattr(o, self.eventName(e), None)
             if callable(f):
                 self.events[e].append(f)
+        f = getattr(o, "afterParse", None)
+        if callable(f):
+            self.afterParse.append(f)
     
     def event(self, e, obj):
         for f in self.events[e]:
@@ -99,6 +103,8 @@ class CSSQC:
             self.tokens.append(token)
             self.event(token.type, token)
         result = self.parser.parse(lexer=self)
+        for f in self.afterParse:
+            self.warnings += f()
         return result
 
 class QualityWarning:
@@ -106,6 +112,9 @@ class QualityWarning:
         self.rule = rule
         self.line = line
         self.message = msg
+    
+    def getLine(self):
+        return self.line
     
     def __repr__(self):
         return '<QualityWarning rule="'+self.rule+'" line="'+str(self.line) + '">'
