@@ -12,6 +12,7 @@
 
 from cssqc import QualityWarning
 from cssyacc import Whitespace
+from cssqc.helpers import isTupleWithValue, isLast
 
 class noUniversalSelectors:
     def __init__(self, data):
@@ -20,13 +21,12 @@ class noUniversalSelectors:
     def on_Ruleset(self, rs):
         warnings = []
         for i in range(len(rs.name)):
-            if type(rs.name[i]) is tuple:
-                if rs.name[i][0] == '*' \
-                    and (i == 0 \
-                        or type(rs.name[i-1]) is Whitespace \
-                        or (type(rs.name[i-1]) is tuple and rs.name[i-1][0] == ',')) \
-                    and (i == (len(rs.name) - 1) \
-                        or type(rs.name[i+1]) is Whitespace \
-                        or (type(rs.name[i+1]) is tuple and rs.name[i+1][0] == ',')):
-                    warnings.append(QualityWarning('noUniversalSelectors', rs.name[i][1], 'Universal selector present.'))
+            if isTupleWithValue(rs.name[i], '*') \
+                and (i == 0 \
+                    or type(rs.name[i-1]) is Whitespace \
+                    or isTupleWithValue(rs.name[i-1], ',')) \
+                and (isLast(i, rs.name) \
+                    or type(rs.name[i+1]) is Whitespace \
+                    or isTupleWithValue(rs.name[i+1], ',')):
+                warnings.append(QualityWarning('noUniversalSelectors', rs.name[i][1], 'Universal selector present.'))
         return warnings

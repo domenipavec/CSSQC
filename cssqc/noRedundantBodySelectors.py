@@ -12,6 +12,7 @@
 
 from cssqc import QualityWarning
 from cssyacc import Whitespace
+from cssqc.helpers import isTupleWithValues, isLast, isTupleWithValue
 
 class noRedundantBodySelectors:
     def __init__(self, data):
@@ -20,16 +21,11 @@ class noRedundantBodySelectors:
     def on_Ruleset(self, rs):
         warnings = []
         for i in range(len(rs.name)):
-            if type(rs.name[i]) is tuple:
-                if rs.name[i][0][0:4] == 'body' and not \
-                    (i == len(rs.name) - 1 or \
-                    (type(rs.name[i+1]) is tuple and \
-                        (rs.name[i+1][0] == ',' or \
-                        rs.name[i+1][0] == '>')) or \
-                    (type(rs.name[i+1]) is Whitespace and \
-                        (i == len(rs.name) - 2 or \
-                        (type(rs.name[i+2]) is tuple and \
-                            (rs.name[i+2][0] == ',' or \
-                            rs.name[i+2][0] == '>'))))):
+            if isTupleWithValue(rs.name[i], 'body') \
+                and not (isLast(i, rs.name) \
+                    or isTupleWithValues(rs.name[i+1], (',', '>')) \
+                    or (type(rs.name[i+1]) is Whitespace \
+                        and (isLast(i+1, rs.name) \
+                            or isTupleWithValues(rs.name[i+2], (',', '>'))))):
                     warnings.append(QualityWarning('noRedundantBodySelectors', rs.name[i][1], 'Universal selector present.'))
         return warnings
