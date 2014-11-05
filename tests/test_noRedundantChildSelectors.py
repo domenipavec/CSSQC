@@ -46,6 +46,9 @@ div %(parent)s > %(child)s {
     def test_no_redundant_table_th(self):
         self.redundancy_parent_child('table', 'th')
     
+    def test_no_redundant_table_td(self):
+        self.redundancy_parent_child('table', 'td')
+    
     def test_no_redundant_table_tr(self):
         self.redundancy_parent_child('table', 'tr')
     
