@@ -17,10 +17,10 @@ import re
 class noZeroUnits:
     def __init__(self, data):
         self.on_PERCENTAGE = self.on_DIMENSION
-        self.regex = re.compile(flags + r'(0+|0*\.0+)(%|('+ident+r'))')
+        self.zero_with_units_re = re.compile(flags + r'(0+|0*\.0+)(%|('+ident+r'))')
 
     def on_DIMENSION(self, i):
-        if self.regex.match(i.value):
+        if self.zero_with_units_re.match(i.value):
             return [QualityWarning('noZeroUnits', i.lineno, 'A zero with units appears: ' + i.value)]
         else:
             return []

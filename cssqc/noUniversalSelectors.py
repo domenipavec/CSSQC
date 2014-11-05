@@ -18,15 +18,21 @@ class noUniversalSelectors:
     def __init__(self, data):
         pass
 
+    def firstInSelectorOrDescendant(self, i, l):
+        return i == 0 \
+            or type(l[i-1]) is Whitespace \
+            or isTupleWithValue(l[i-1], ',')
+    
+    def lastInSelectorOrHasDescendant(self, i, l):
+        return isLast(i, l) \
+            or type(l[i+1]) is Whitespace \
+            or isTupleWithValue(l[i+1], ',')
+
     def on_Ruleset(self, rs):
         warnings = []
         for i in range(len(rs.name)):
             if isTupleWithValue(rs.name[i], '*') \
-                and (i == 0 \
-                    or type(rs.name[i-1]) is Whitespace \
-                    or isTupleWithValue(rs.name[i-1], ',')) \
-                and (isLast(i, rs.name) \
-                    or type(rs.name[i+1]) is Whitespace \
-                    or isTupleWithValue(rs.name[i+1], ',')):
+                and self.firstInSelectorOrDescendant(i, rs.name) \
+                and self.lastInSelectorOrHasDescendant(i, rs.name):
                 warnings.append(QualityWarning('noUniversalSelectors', rs.name[i][1], 'Universal selector present.'))
         return warnings

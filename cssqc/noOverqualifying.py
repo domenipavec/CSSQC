@@ -23,41 +23,43 @@ import re
 
 class noOverqualifying:
     def __init__(self, data):
-        self.oq_class = False
-        self.oq_id = False
+        self.check_class = False
+        self.check_ID = False
         if 'class' in data:
-            self.oq_class = True
+            self.check_class = True
         if 'id' in data:
-            self.oq_id = True
+            self.check_ID = True
         if 'both' in data:
-            self.oq_class = True
-            self.oq_id = True
+            self.check_class = True
+            self.check_ID = True
         self.ident_re = re.compile(t_IDENT)
-        self.tag_class_pairs = {}
+        # format for class_list is [number_of_tags, line_number, tag]
+        self.class_list = {}
 
     def afterParse(self):
         warnings = []
-        for c in self.tag_class_pairs:
-            if self.tag_class_pairs[c][0] == 1:
+        print(self.class_list)
+        for class_name in self.class_list:
+            if self.class_list[class_name][0] == 1:
                 warnings.append(QualityWarning('noOverqualifying', \
-                                               self.tag_class_pairs[c][1],
-                                               'Overqualified class "%s.%s".' % (self.tag_class_pairs[c][2], c)))
+                   self.class_list[class_name][1],
+                   'Overqualified class "%s.%s".' % (self.class_list[class_name][2], class_name)))
         return warnings
 
     def on_Ruleset(self, rs):
         for i in range(len(rs.name)):
             if type(rs.name[i]) is tuple:
-                if self.oq_class:
-                    if self.checkClass(rs, i):
+                if self.check_class:
+                    if self.isTagClassPair(rs, i):
                         return []
-                if self.oq_id:
-                    if self.checkID(rs, i):
+                if self.check_ID:
+                    if self.isOverqualifiedID(rs, i):
                         return [QualityWarning('noOverqualifying', \
                                                rs.name[i][1], \
                                                'Overqualified ID "%s".' % rs.name[i][0])]
         return []
     
-    def checkID(self, rs, i):
+    def isOverqualifiedID(self, rs, i):
         if rs.name[i][0][0] == '#':
             for j in range(len(rs.name)):
                 if i != j and \
@@ -65,17 +67,18 @@ class noOverqualifying:
                     return True
         return False
     
-    def checkClass(self, rs, i):
+    def isTagClassPair(self, rs, i):
         try:
+            class_name = rs.name[i+1][0]
+            tag_name = rs.name[i-1][0]
             if rs.name[i][0] == '.' \
-                and self.ident_re.match(rs.name[i+1][0]) \
-                and self.ident_re.match(rs.name[i-1][0]):
-                ident = rs.name[i+1][0]
-                if ident in self.tag_class_pairs:
-                    if self.tag_class_pairs[ident][2] != rs.name[i-1][0]:
-                        self.tag_class_pairs[ident][0] += 1
+                and self.ident_re.match(class_name) \
+                and self.ident_re.match(tag_name):
+                if class_name in self.class_list:
+                    if self.class_list[class_name][2] != tag_name:
+                        self.class_list[class_name][0] += 1
                 else:
-                    self.tag_class_pairs[ident] = [1, rs.name[i][1], rs.name[i-1][0]]
+                    self.class_list[class_name] = [1, rs.name[i][1], tag_name]
                 return True
         except:
             pass
