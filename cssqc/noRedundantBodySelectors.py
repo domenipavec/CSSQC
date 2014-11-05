@@ -30,5 +30,5 @@ class noRedundantBodySelectors:
         for i in range(len(rs.name)):
             if isTupleWithValue(rs.name[i], 'body') \
                 and not self.lastInRuleOrHasChild(i, rs.name):
-                    warnings.append(QualityWarning('noRedundantBodySelectors', rs.name[i][1], 'Universal selector present.'))
+                    warnings.append(QualityWarning('noRedundantBodySelectors', rs.name[i][1], 'Redundant body selector.'))
         return warnings
