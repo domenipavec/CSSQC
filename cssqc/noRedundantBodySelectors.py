@@ -18,14 +18,17 @@ class noRedundantBodySelectors:
     def __init__(self, data):
         pass
 
+    def lastInRuleOrHasChild(self, i, l):
+        return isLast(i, l) \
+            or isTupleWithValues(l[i+1], (',', '>')) \
+            or (type(l[i+1]) is Whitespace \
+                and (isLast(i+1, l)
+                    or isTupleWithValues(l[i+2], (',', '>'))))
+
     def on_Ruleset(self, rs):
         warnings = []
         for i in range(len(rs.name)):
             if isTupleWithValue(rs.name[i], 'body') \
-                and not (isLast(i, rs.name) \
-                    or isTupleWithValues(rs.name[i+1], (',', '>')) \
-                    or (type(rs.name[i+1]) is Whitespace \
-                        and (isLast(i+1, rs.name) \
-                            or isTupleWithValues(rs.name[i+2], (',', '>'))))):
+                and not self.lastInRuleOrHasChild(i, rs.name):
                     warnings.append(QualityWarning('noRedundantBodySelectors', rs.name[i][1], 'Universal selector present.'))
         return warnings
