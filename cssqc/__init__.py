@@ -98,7 +98,7 @@ class CSSQC:
             self.event(token.type, token)
         result = self.parser.parse(lexer=self)
         for f in self.afterParse:
-            self.warnings += f()
+            self.warnings += f(result)
         return result
 
 class QualityWarning:

@@ -36,7 +36,7 @@ class noOverqualifying:
         # format for class_list is [number_of_tags, line_number, tag]
         self.class_list = {}
 
-    def afterParse(self):
+    def afterParse(self, result):
         warnings = []
         print(self.class_list)
         for class_name in self.class_list:
