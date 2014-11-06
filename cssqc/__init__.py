@@ -39,14 +39,8 @@ EVENTS = (
     'INCLUDES',
     'DASHMATCH',
     'DELIM',
-    'Comment',
-    'Whitespace',
-    'Block',
     'Statement',
-    'Ruleset',
-    'Parentheses',
-    'Brackets',
-    'Function'
+    'Ruleset'
 )
 
 instance = None

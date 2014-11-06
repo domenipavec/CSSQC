@@ -9,6 +9,8 @@
 # Distributed under The MIT License, see LICENSE
 # ----------------------------------------------------------------
 
+import cssqc
+
 class Statement:
     def __init__(self, t, ln):
         self.lineno = ln
@@ -16,6 +18,8 @@ class Statement:
             self.text = []
         else:
             self.text = t
+        if cssqc.instance is not None:
+            cssqc.instance.event('Statement', self)
     
     def __str__(self):
         return ''.join(map(str, self.text))
