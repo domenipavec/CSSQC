@@ -13,28 +13,25 @@ from cssyacc.statement import Statement
 
 class Block:
     def __init__(self, el, t, ln1, ln2):
-        self.text = el
+        self.elements = el
         self.lb_lineno = ln1
         self.rb_lineno = ln2
-        if t is None:
-            self.last = []
-        else:
-            self.last = t
+        self.last = Statement(t, ln2)
     
     def __str__(self):
-        return ''.join(map(str, self.text))
+        return ''.join(map(str, self.elements))
     
     def __len__(self):
-        return len(self.text)
+        return len(self.elements)
 
     def __eq__(self, other):
         if type(self) != type(other):
             return False
-        return self.text == other.text \
+        return self.elements == other.elements\
             and self.last == other.last \
             and self.lb_lineno == other.lb_lineno \
             and self.rb_lineno == other.rb_lineno
 
     def __repr__(self):
-        return '<Block>\n    ' + '\n    '.join(map(repr, self.text)) + '\n</Block>'
+        return '<Block>\n    ' + '\n    '.join(map(repr, self.elements)) + '\n</Block>'
         
