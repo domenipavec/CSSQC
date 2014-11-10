@@ -18,7 +18,7 @@ class Test_noLeadingZeros(unittest.TestCase):
         c.parse(data)
         return c
     
-    def test_no_zero_units(self):
+    def test_no_leading_zeros(self):
         c = self.parse('''div {
     height: 0.1px;
     width: 0.2%;

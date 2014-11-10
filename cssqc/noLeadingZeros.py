@@ -21,7 +21,6 @@ class noLeadingZeros:
         self.leading_zeros_re = re.compile(flags + r'(0+\.[0-9]*)(%|('+ident+r'))?')
 
     def on_DIMENSION(self, i):
-        print(i.value)
         if self.leading_zeros_re.match(i.value):
             return [QualityWarning('noLeadingZeros', i.lineno, 'A leading zero appears: ' + i.value)]
         else:
