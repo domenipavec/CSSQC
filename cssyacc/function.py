@@ -9,6 +9,8 @@
 # Distributed under The MIT License, see LICENSE
 # ----------------------------------------------------------------
 
+import cssqc
+
 class Function:
     def __init__(self, n, t, ln1, ln2):
         self.name_lineno = ln1
@@ -22,6 +24,9 @@ class Function:
             self.text = []
         else:
             self.text = t
+        
+        if cssqc.instance is not None:
+            cssqc.instance.event('Function', self)
     
     def __str__(self):
         return ''.join(map(str, self.name)) + ''.join(map(str, self.text)) + ')'

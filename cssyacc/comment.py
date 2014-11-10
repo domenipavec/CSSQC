@@ -9,10 +9,15 @@
 # Distributed under The MIT License, see LICENSE
 # ----------------------------------------------------------------
 
+import cssqc
+
 class Comment:
     def __init__(self, v, ln):
         self.value = v
         self.lineno = ln
+        
+        if cssqc.instance is not None:
+            cssqc.instance.event('Comment', self)
     
     def __str__(self):
         return self.value

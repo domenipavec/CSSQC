@@ -43,9 +43,14 @@ a:hover {
 .foo (@bg: #f5f5f5, @color: blue) {
   background: @bg;
   color: @color;
+}
+.foo1(@bg: #f5f5f5, @color: blue) {
+  background: @bg;
+  color: @color;
 }''')
         self.assertEqual(c.warnings, [
             QualityWarning('noColorKeyword', 2),
             QualityWarning('noColorKeyword', 14),
-            QualityWarning('noColorKeyword', 22)
+            QualityWarning('noColorKeyword', 22),
+            QualityWarning('noColorKeyword', 26)
         ])

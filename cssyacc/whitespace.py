@@ -9,6 +9,8 @@
 # Distributed under The MIT License, see LICENSE
 # ----------------------------------------------------------------
 
+import cssqc
+
 class Whitespace:
     def __init__(self, v, ln):
         self.lineno = ln
@@ -16,6 +18,8 @@ class Whitespace:
             self.value = ''
         else:
             self.value = v
+        if cssqc.instance is not None:
+            cssqc.instance.event('Whitespace', self)
     
     def __str__(self):
         return self.value

@@ -10,6 +10,7 @@
 # ----------------------------------------------------------------
 
 from cssqc import QualityWarning
+from cssqc.helpers import isTupleWithValue
 from bisect import bisect_left
 
 class noColorKeyword:
@@ -156,17 +157,31 @@ class noColorKeyword:
             'yellow',
             'yellowgreen'
         )
+        self.on_Parentheses = self.on_Function
         
     def isColor(self, v):
         v = v.lower()
         i = bisect_left(self.colors, v)
         return i != len(self.colors) \
             and self.colors[i] == v
-        
-    def on_Statement(self, statement):
+    
+    def on_Function(self, f):
         warnings = []
-        for t in statement.text:
+        for t in f.text:
             if type(t) is tuple \
                 and self.isColor(t[0]):
                 warnings.append(QualityWarning('noColorKeyword', t[1], 'Color keyword "%s" appears.' % t[0]))
+        return warnings
+    
+    def on_Statement(self, statement):
+        warnings = []
+        is_after_colon = False
+        for t in statement.text:
+            if is_after_colon:
+                if type(t) is tuple \
+                    and self.isColor(t[0]):
+                    warnings.append(QualityWarning('noColorKeyword', t[1], 'Color keyword "%s" appears.' % t[0]))
+            else:
+                if isTupleWithValue(t, ':'):
+                    is_after_colon = True
         return warnings

@@ -9,6 +9,8 @@
 # Distributed under The MIT License, see LICENSE
 # ----------------------------------------------------------------
 
+import cssqc
+
 class Parentheses:
     def __init__(self, t, ln1, ln2):
         self.lp_lineno = ln1
@@ -17,7 +19,9 @@ class Parentheses:
             self.text = []
         else:
             self.text = t
-    
+        if cssqc.instance is not None:
+            cssqc.instance.event('Parentheses', self)
+
     def __str__(self):
         return ''.join(map(str, self.text))
     
