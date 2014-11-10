@@ -54,11 +54,11 @@ class hexFormat:
                 return True
             if self.check_lower \
                 and (len(v) == 7 or len(v) == 4) \
-                and vlower != v:
+                and not v.islower():
                 return True
             if self.check_upper \
                 and (len(v) == 7 or len(v) == 4) \
-                and v.upper() != v:
+                and not v.isupper():
                 return True
             if self.check_validate \
                 and not (len(v) == 7 or len(v) == 4):
