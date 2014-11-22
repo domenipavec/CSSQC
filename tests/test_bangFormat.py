@@ -10,7 +10,8 @@
 # ----------------------------------------------------------------
 
 import unittest
-from cssqc import CSSQC, QualityWarning
+from cssqc.parser import CSSQC
+from cssqc.qualityWarning import QualityWarning
 
 class Test_bangFormat(unittest.TestCase):
     def parseBefore(self, data):

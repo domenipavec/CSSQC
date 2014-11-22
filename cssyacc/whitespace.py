@@ -9,7 +9,7 @@
 # Distributed under The MIT License, see LICENSE
 # ----------------------------------------------------------------
 
-import cssqc
+from cssqc.parser import CSSQC
 
 class Whitespace:
     def __init__(self, v, ln):
@@ -18,8 +18,10 @@ class Whitespace:
             self.value = ''
         else:
             self.value = v
-        if cssqc.instance is not None:
-            cssqc.instance.event('Whitespace', self)
+
+        i = CSSQC.getInstance()
+        if i is not None:
+            i.event(self.__class__.__name__, self)
     
     def __str__(self):
         return self.value

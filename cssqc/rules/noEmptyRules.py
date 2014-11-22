@@ -9,7 +9,7 @@
 # Distributed under The MIT License, see LICENSE
 # ----------------------------------------------------------------
 
-from cssqc import QualityWarning
+from cssqc.qualityWarning import QualityWarning
 from cssyacc import Whitespace, Comment
 
 class noEmptyRules:

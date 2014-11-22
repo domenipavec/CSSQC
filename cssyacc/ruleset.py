@@ -9,7 +9,7 @@
 # Distributed under The MIT License, see LICENSE
 # ----------------------------------------------------------------
 
-import cssqc
+from cssqc.parser import CSSQC
 
 class Ruleset:
     def __init__(self, n, b):
@@ -18,8 +18,10 @@ class Ruleset:
         else:
             self.name = n
         self.block = b
-        if cssqc.instance is not None:
-            cssqc.instance.event('Ruleset', self)
+
+        i = CSSQC.getInstance()
+        if i is not None:
+            i.event(self.__class__.__name__, self)
     
     def __str__(self):
         return ''.join(map(str, self.name)) + ': ' + str(self.block)

@@ -15,7 +15,7 @@
 # Distributed under The MIT License, see LICENSE
 # ----------------------------------------------------------------
 
-from cssqc import QualityWarning
+from cssqc.qualityWarning import QualityWarning
 from csslex import t_IDENT
 from cssyacc import Whitespace, Comment
 

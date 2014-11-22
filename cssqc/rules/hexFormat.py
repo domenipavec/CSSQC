@@ -13,7 +13,7 @@
 # Distributed under The MIT License, see LICENSE
 # ----------------------------------------------------------------
 
-from cssqc import QualityWarning
+from cssqc.qualityWarning import QualityWarning
 from cssqc.helpers import isTupleWithValue
 from bisect import bisect_left
 

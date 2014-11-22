@@ -9,7 +9,7 @@
 # Distributed under The MIT License, see LICENSE
 # ----------------------------------------------------------------
 
-import cssqc
+from cssqc.parser import CSSQC
 
 class Brackets:
     def __init__(self, t, ln1, ln2):
@@ -20,8 +20,9 @@ class Brackets:
         else:
             self.text = t
         
-        if cssqc.instance is not None:
-            cssqc.instance.event('Brackets', self)
+        i = CSSQC.getInstance()
+        if i is not None:
+            i.event(self.__class__.__name__, self)
     
     def __str__(self):
         return ''.join(map(str, self.text))

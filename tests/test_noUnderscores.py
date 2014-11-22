@@ -10,7 +10,8 @@
 # ----------------------------------------------------------------
 
 import unittest
-from cssqc import CSSQC, QualityWarning
+from cssqc.parser import CSSQC
+from cssqc.qualityWarning import QualityWarning
 
 class Test_noUnderscores(unittest.TestCase):
     def parse(self, data):

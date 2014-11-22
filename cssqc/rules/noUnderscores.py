@@ -9,7 +9,7 @@
 # Distributed under The MIT License, see LICENSE
 # ----------------------------------------------------------------
 
-from cssqc import QualityWarning
+from cssqc.qualityWarning import QualityWarning
 
 class noUnderscores:
     def __init__(self, data):
