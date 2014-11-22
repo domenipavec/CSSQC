@@ -13,6 +13,9 @@ from cssqc.qualityWarning import QualityWarning
 from cssqc.helpers import isTupleWithValue
 from bisect import bisect_left
 
+def getHelp():
+    return """Do not allow specifing colors with keywords."""
+
 class noColorKeyword:
     def __init__(self, data):
         self.colors = (

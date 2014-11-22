@@ -14,6 +14,9 @@ from csslex import ident, flags
 
 import re
 
+def getHelp():
+    return """Do not allow trailing zeros with decimals (e.g. .30px)."""
+
 class noTrailingZeros:
     def __init__(self, data):
         self.on_PERCENTAGE = self.on_DIMENSION

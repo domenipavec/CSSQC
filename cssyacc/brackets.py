@@ -9,7 +9,7 @@
 # Distributed under The MIT License, see LICENSE
 # ----------------------------------------------------------------
 
-from cssqc.parser import CSSQC
+import cssqc.parser
 
 class Brackets:
     def __init__(self, t, ln1, ln2):
@@ -20,7 +20,7 @@ class Brackets:
         else:
             self.text = t
         
-        i = CSSQC.getInstance()
+        i = cssqc.parser.CSSQC.getInstance()
         if i is not None:
             i.event(self.__class__.__name__, self)
     

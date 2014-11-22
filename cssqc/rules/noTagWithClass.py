@@ -16,6 +16,9 @@ from cssqc.helpers import isTupleWithValue
 
 import re
 
+def getHelp():
+    return """Do not allow tag with class (e.g. div.class)."""
+
 class noTagWithClass:
     def __init__(self, data):
         self.ident_re = re.compile(t_IDENT)

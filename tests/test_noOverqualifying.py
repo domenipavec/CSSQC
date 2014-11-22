@@ -15,22 +15,19 @@ from cssqc.qualityWarning import QualityWarning
 
 class Test_noOverqualifying(unittest.TestCase):
     def parseClass(self, data):
-        c = CSSQC({"noOverqualifying": ['class']})
+        c = CSSQC({"noOverqualifying": 'class'})
         c.parse(data)
         return c
     
     def parseID(self, data):
-        c = CSSQC({"noOverqualifying": ['id']})
+        c = CSSQC({"noOverqualifying": 'id'})
         c.parse(data)
         return c
 
     def parseBoth(self, data):
-        c1 = CSSQC({"noOverqualifying": ['class', 'id']})
-        c1.parse(data)
-        c2 = CSSQC({"noOverqualifying": ['both']})
-        c2.parse(data)
-        self.assertItemsEqual(c1.warnings, c2.warnings)
-        return c1
+        c = CSSQC({"noOverqualifying": 'both'})
+        c.parse(data)
+        return c
 
     def assertItemsEqual(self, l1, l2):
         self.assertEqual(sorted(l1, key=QualityWarning.getLine), sorted(l2, key=QualityWarning.getLine))

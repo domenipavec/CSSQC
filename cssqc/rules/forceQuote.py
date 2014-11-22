@@ -11,6 +11,9 @@
 
 from cssqc.qualityWarning import QualityWarning
 
+def getHelp():
+    return """Force 'single' or 'double' quotes."""
+
 class forceQuote:
     def __init__(self, data):
         self.doubleq = (data == "double")

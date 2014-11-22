@@ -11,6 +11,9 @@
 
 from cssqc.qualityWarning import QualityWarning
 
+def getHelp():
+    return """Do not allow IDs in selectors."""
+
 class noIDs:
     def __init__(self, data):
         pass

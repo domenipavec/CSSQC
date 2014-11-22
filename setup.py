@@ -14,11 +14,21 @@ from setuptools import setup, find_packages
 setup(
     name='CSSQC',
     
-    version='0.1',
+    version='0.0.1',
     
-    packages=['csslex', 'cssyacc'],
+    packages=['csslex', 'cssyacc', 'cssqc', 'cssqc.rules'],
     
     test_suite='nose.collector',
     
-    install_requires=['nose', 'ply']
+    install_requires=['nose', 'ply'],
+    
+    entry_points={
+        'console_scripts': [
+            'cssqc=cssqc:main'
+        ]
+    },
+
+    package_data={
+        'cssqc': ['defaults.cfg']
+    }
 )

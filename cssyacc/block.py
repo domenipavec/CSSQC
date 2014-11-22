@@ -10,7 +10,7 @@
 # ----------------------------------------------------------------
 
 from cssyacc.statement import Statement
-from cssqc.parser import CSSQC
+import cssqc.parser
 
 class Block:
     def __init__(self, el, t, ln1, ln2):
@@ -19,7 +19,7 @@ class Block:
         self.rb_lineno = ln2
         self.last = Statement(t, ln2)
         
-        i = CSSQC.getInstance()
+        i = cssqc.parser.CSSQC.getInstance()
         if i is not None:
             i.event(self.__class__.__name__, self)
     

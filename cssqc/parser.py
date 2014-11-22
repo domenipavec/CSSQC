@@ -72,7 +72,11 @@ class CSSQC:
     
     def addRules(self, rules):
         for rule in rules:
-            if rules[rule]:
+            try:
+                enabled = rules.getboolean(rule)
+            except:
+                enabled = True
+            if enabled:
                 module = importlib.import_module("cssqc.rules."+rule)
                 klass = getattr(module, rule)
                 self.addRuleObject(klass(rules[rule]))

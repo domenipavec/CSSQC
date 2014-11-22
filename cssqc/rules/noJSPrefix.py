@@ -11,6 +11,9 @@
 
 from cssqc.qualityWarning import QualityWarning
 
+def getHelp():
+    return """Do not allow "js-" prefixes in selectors."""
+
 class noJSPrefix:
     def __init__(self, data):
         pass

@@ -14,6 +14,9 @@ from cssqc.qualityWarning import QualityWarning
 from cssyacc import Whitespace
 from cssqc.helpers import isTupleWithValues, isLast, isTupleWithValue
 
+def getHelp():
+    return """Do not allow redundant body selectors (e.g. body {} is ok, but body div {} is not)."""
+
 class noRedundantBodySelectors:
     def __init__(self, data):
         pass

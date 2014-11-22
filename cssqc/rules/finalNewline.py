@@ -12,6 +12,9 @@
 from cssqc.qualityWarning import QualityWarning
 from cssyacc import Whitespace
 
+def getHelp():
+    return """File must have newline at the end."""
+
 class finalNewline:
     def __init__(self, data):
         pass

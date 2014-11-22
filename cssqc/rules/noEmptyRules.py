@@ -12,6 +12,9 @@
 from cssqc.qualityWarning import QualityWarning
 from cssyacc import Whitespace, Comment
 
+def getHelp():
+    return """Do not allow rules with empty blocks."""
+
 class noEmptyRules:
     def __init__(self, data):
         pass

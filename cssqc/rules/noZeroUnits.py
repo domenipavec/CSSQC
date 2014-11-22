@@ -14,6 +14,9 @@ from csslex import ident, flags
 
 import re
 
+def getHelp():
+    return """Do not allow units after 0 value."""
+
 class noZeroUnits:
     def __init__(self, data):
         self.on_PERCENTAGE = self.on_DIMENSION

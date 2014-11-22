@@ -11,6 +11,9 @@
 
 from cssqc.qualityWarning import QualityWarning
 
+def getHelp():
+    return """Do not allow underscores in class, id and mixin names."""
+
 class noUnderscores:
     def __init__(self, data):
         self.on_HASH = self.on_IDENT

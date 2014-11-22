@@ -14,6 +14,9 @@ from csslex import ident, flags
 
 import re
 
+def getHelp():
+    return """Do not allow leading zeros with decimals (e.g. 0.3px)."""
+
 class noLeadingZeros:
     def __init__(self, data):
         self.on_PERCENTAGE = self.on_DIMENSION

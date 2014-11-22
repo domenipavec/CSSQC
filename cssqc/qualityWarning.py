@@ -20,7 +20,7 @@ class QualityWarning:
     
     def __repr__(self):
         return '<QualityWarning rule="'+self.rule+'" line="'+str(self.line) + '">'
-        
+
     def __eq__(self, other):
         if type(self) != type(other):
             return False

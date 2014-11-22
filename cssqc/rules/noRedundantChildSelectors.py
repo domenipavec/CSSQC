@@ -14,6 +14,9 @@ from cssqc.qualityWarning import QualityWarning
 from cssyacc import Whitespace
 from cssqc.helpers import isTupleWithValues, isLast, isTupleWithValue
 
+def getHelp():
+    return """Do not allow redundant child selectors (e.g. ul.class li is ok, but ul li {} is not)."""
+
 class noRedundantChildSelectors:
     def __init__(self, data):
         self.redundancies = (

@@ -17,6 +17,13 @@ from cssqc.qualityWarning import QualityWarning
 from cssqc.helpers import isTupleWithValue
 from bisect import bisect_left
 
+def getHelp():
+    return """Format hex colors. Options are 
+'long' (must be 6 characters long)
+'short' (must be 3 characters when possible)
+'lowercase', 'uppercase' and
+'validate' (must be 3 or 6 characters long)."""
+
 class hexFormat:
     def __init__(self, data):
         self.on_Parentheses = self.on_Function

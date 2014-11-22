@@ -14,6 +14,9 @@ from cssqc.qualityWarning import QualityWarning
 from cssyacc import Whitespace
 from cssqc.helpers import isTupleWithValue, isLast
 
+def getHelp():
+    return """Do not allow universal selectors on their own (e.g. div * {} is not allowed, but *.class {} is ok)."""
+
 class noUniversalSelectors:
     def __init__(self, data):
         pass

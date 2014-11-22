@@ -17,6 +17,10 @@ from cssqc.helpers import isTupleWithValue, isLast
 
 import re
 
+def getHelp():
+    return """Format of spaces around bang(!) before important.
+Options are 'before', 'after', 'both' and 'none'."""
+
 class bangFormat:
     def __init__(self, data):
         if data == 'before':
@@ -28,7 +32,7 @@ class bangFormat:
         elif data == 'none':
             self.bangFormat = self.bangFormatNone
         else:
-            raise Exception('Invalid input for rule noOverqualifying.')
+            raise Exception('Invalid input for rule bangFormat.')
 
     def bangFormatBefore(self, i, l):
         return type(l[i-1]) is Whitespace \

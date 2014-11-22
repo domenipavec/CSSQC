@@ -11,6 +11,9 @@
 
 from cssqc.qualityWarning import QualityWarning
 
+def getHelp():
+    return """Force everything lowercase except hex color, strings and comments."""
+
 class lowercase:
     def __init__(self, data):
         self.on_ATKEYWORD = self.on_IDENT

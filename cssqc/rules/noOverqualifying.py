@@ -4,8 +4,7 @@
 # cssqc/noOverqualifying.py
 # 
 # Do not overqualifying.
-# Options are ['class'], ['id'], ['class', 'id'], ['both'].
-# Last two are identical.
+# Options are 'class', 'id', 'both'.
 # Class means no tag with class, but only if there are not 2
 # different rules for different tags with same class.
 # (e.g. div.class, but allowed div.class {} span.class {})
@@ -21,24 +20,30 @@ from cssyacc import Whitespace, Comment
 
 import re
 
+def getHelp():
+    return """Do not allow overqualifying. Options are 'class', 'id' and 'both'.
+Class means no tag with class, but only if there are not 2 different rules for different tags with same class.
+ID means nothing additional when using ID qualifier."""
+
 class noOverqualifying:
     def __init__(self, data):
         self.check_class = False
         self.check_ID = False
-        if 'class' in data:
+        if data == 'class':
             self.check_class = True
-        if 'id' in data:
+        elif data == 'id':
             self.check_ID = True
-        if 'both' in data:
+        elif data == 'both':
             self.check_class = True
             self.check_ID = True
+        else:
+            raise Exception('Invalid input for rule noOverqualifying.')
         self.ident_re = re.compile(t_IDENT)
         # format for class_list is [number_of_tags, line_number, tag]
         self.class_list = {}
 
     def afterParse(self, result):
         warnings = []
-        print(self.class_list)
         for class_name in self.class_list:
             if self.class_list[class_name][0] == 1:
                 warnings.append(QualityWarning('noOverqualifying', \

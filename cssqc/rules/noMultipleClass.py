@@ -16,6 +16,9 @@ from cssqc.helpers import isTupleWithValue
 
 import re
 
+def getHelp():
+    return """Do not allow multiple class (e.g. .class1.class2)."""
+
 class noMultipleClass:
     def __init__(self, data):
         self.ident_re = re.compile(t_IDENT)
