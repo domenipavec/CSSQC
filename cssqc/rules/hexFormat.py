@@ -40,28 +40,34 @@ class hexFormat:
             self.check_validate = True
         else:
             self.check_validate = False
+        self.last_err = ""
 
     def isInvalidColor(self, v):
         vlower = v.lower()
         if v[0] == '#':
             if self.check_long and len(v) == 4:
+                self.last_err = 'Hex "%s" is not long.' % v
                 return True
             if self.check_short \
                 and len(v) == 7 \
                 and vlower[1] == vlower[2] \
                 and vlower[3] == vlower[4] \
                 and vlower[5] == vlower[6]:
+                self.last_err = 'Hex "%s" should be short.' % v
                 return True
             if self.check_lower \
                 and (len(v) == 7 or len(v) == 4) \
-                and not v.islower():
+                and vlower != v:
+                self.last_err = 'Hex "%s" should be lowercase.' % v
                 return True
             if self.check_upper \
                 and (len(v) == 7 or len(v) == 4) \
-                and not v.isupper():
+                and v.upper() != v:
+                self.last_err = 'Hex "%s" should be uppercase.' % v
                 return True
             if self.check_validate \
                 and not (len(v) == 7 or len(v) == 4):
+                self.last_err = 'Hex "%s" invalid hex.' % v
                 return True
         else:
             return False
@@ -71,7 +77,7 @@ class hexFormat:
         for t in f.text:
             if type(t) is tuple \
                 and self.isInvalidColor(t[0]):
-                warnings.append(QualityWarning('hexFormat', t[1], 'Wrong formatted hex "%s" appears.' % t[0]))
+                warnings.append(QualityWarning('hexFormat', t[1], self.last_err))
         return warnings
     
     def on_Statement(self, statement):
@@ -81,7 +87,7 @@ class hexFormat:
             if is_after_colon:
                 if type(t) is tuple \
                     and self.isInvalidColor(t[0]):
-                    warnings.append(QualityWarning('hexFormat', t[1], 'Wrong formatted hex "%s" appears.' % t[0]))
+                    warnings.append(QualityWarning('hexFormat', t[1], self.last_err))
             else:
                 if isTupleWithValue(t, ':'):
                     is_after_colon = True

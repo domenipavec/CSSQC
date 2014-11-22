@@ -69,7 +69,8 @@ class Test_hexFormat(unittest.TestCase):
 }
 .foo (@bg: #ff2ef) {
   background: @bg;
-}'''
+}
+@c10: #123456;'''
         warnings_dict = {
             'long': [
                 QualityWarning('hexFormat', 2),
