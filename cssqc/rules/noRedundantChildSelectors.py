@@ -54,13 +54,13 @@ class noRedundantChildSelectors:
             return False
         return True
 
-    def on_Ruleset(self, rs):
+    def on_Selector(self, s):
         warnings = []
-        for i in range(len(rs.name)):
+        for i in range(len(s.text)):
             for parent, children in self.redundancies:
-                if isTupleWithValue(rs.name[i], parent) \
-                    and (self.hasDescendants(i, rs.name, children) \
-                        or self.hasChildren(i, rs.name, children)) \
-                    and not self.isChild(i, rs.name):
-                        warnings.append(QualityWarning('noRedundantChildSelectors', rs.name[i][1], 'Redundant child selector for %s.' % parent))
+                if isTupleWithValue(s.text[i], parent) \
+                    and (self.hasDescendants(i, s.text, children) \
+                        or self.hasChildren(i, s.text, children)) \
+                    and not self.isChild(i, s.text):
+                        warnings.append(QualityWarning('noRedundantChildSelectors', s.text[i][1], 'Redundant child selector for %s.' % parent))
         return warnings

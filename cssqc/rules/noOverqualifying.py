@@ -51,40 +51,40 @@ class noOverqualifying:
                    'Overqualified class "%s.%s".' % (self.class_list[class_name][2], class_name)))
         return warnings
 
-    def on_Ruleset(self, rs):
-        for i in range(len(rs.name)):
-            if type(rs.name[i]) is tuple:
+    def on_Selector(self, s):
+        for i in range(len(s.text)):
+            if type(s.text[i]) is tuple:
                 if self.check_class:
-                    if self.isTagClassPair(rs, i):
+                    if self.isTagClassPair(s, i):
                         return []
                 if self.check_ID:
-                    if self.isOverqualifiedID(rs, i):
+                    if self.isOverqualifiedID(s, i):
                         return [QualityWarning('noOverqualifying', \
-                                               rs.name[i][1], \
-                                               'Overqualified ID "%s".' % rs.name[i][0])]
+                                               s.text[i][1], \
+                                               'Overqualified ID "%s".' % s.text[i][0])]
         return []
     
-    def isOverqualifiedID(self, rs, i):
-        if rs.name[i][0][0] == '#':
-            for j in range(len(rs.name)):
+    def isOverqualifiedID(self, s, i):
+        if s.text[i][0][0] == '#':
+            for j in range(len(s.text)):
                 if i != j and \
-                    (type(rs.name[j]) is not Comment and type(rs.name[j]) is not Whitespace):
+                    (type(s.text[j]) is not Comment and type(s.text[j]) is not Whitespace):
                     return True
         return False
     
-    def isTagClassPair(self, rs, i):
+    def isTagClassPair(self, s, i):
         try:
-            class_name = rs.name[i+1][0]
-            tag_name = rs.name[i-1][0]
-            if rs.name[i][0] == '.' \
+            class_name = s.text[i+1][0]
+            tag_name = s.text[i-1][0]
+            if s.text[i][0] == '.' \
                 and self.ident_re.match(class_name) \
                 and self.ident_re.match(tag_name):
                 if class_name in self.class_list:
                     if self.class_list[class_name][2] != tag_name:
                         self.class_list[class_name][0] += 1
                 else:
-                    self.class_list[class_name] = [1, rs.name[i][1], tag_name]
+                    self.class_list[class_name] = [1, s.text[i][1], tag_name]
                 return True
-        except:
+        except Exception as inst:
             pass
         return False

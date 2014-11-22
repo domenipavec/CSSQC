@@ -23,19 +23,17 @@ class noUniversalSelectors:
 
     def firstInSelectorOrDescendant(self, i, l):
         return i == 0 \
-            or type(l[i-1]) is Whitespace \
-            or isTupleWithValue(l[i-1], ',')
+            or type(l[i-1]) is Whitespace
     
     def lastInSelectorOrHasDescendant(self, i, l):
         return isLast(i, l) \
-            or type(l[i+1]) is Whitespace \
-            or isTupleWithValue(l[i+1], ',')
+            or type(l[i+1]) is Whitespace
 
-    def on_Ruleset(self, rs):
+    def on_Selector(self, s):
         warnings = []
-        for i in range(len(rs.name)):
-            if isTupleWithValue(rs.name[i], '*') \
-                and self.firstInSelectorOrDescendant(i, rs.name) \
-                and self.lastInSelectorOrHasDescendant(i, rs.name):
-                warnings.append(QualityWarning('noUniversalSelectors', rs.name[i][1], 'Universal selector present.'))
+        for i in range(len(s.text)):
+            if isTupleWithValue(s.text[i], '*') \
+                and self.firstInSelectorOrDescendant(i, s.text) \
+                and self.lastInSelectorOrHasDescendant(i, s.text):
+                warnings.append(QualityWarning('noUniversalSelectors', s.text[i][1], 'Universal selector present.'))
         return warnings

@@ -33,9 +33,9 @@ class lowercase:
         else:
             return []
 
-    def on_Ruleset(self, rs):
+    def on_Selector(self, s):
         warnings = []
-        for e in rs.name:
+        for e in s.text:
             if type(e) is tuple \
                 and e[0][0] == '#' \
                 and e[0].lower() != e[0]:

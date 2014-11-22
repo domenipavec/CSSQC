@@ -133,13 +133,11 @@ div.class5 {
         c_both = self.parseBoth(sample)
         self.assertItemsEqual(c_class.warnings, [
             QualityWarning('noOverqualifying', 1),
-            QualityWarning('noOverqualifying', 10),
             QualityWarning('noOverqualifying', 19)
         ])
         self.assertItemsEqual(c_id.warnings, [])
         self.assertItemsEqual(c_both.warnings, [
             QualityWarning('noOverqualifying', 1),
-            QualityWarning('noOverqualifying', 10),
             QualityWarning('noOverqualifying', 19)
         ])
     

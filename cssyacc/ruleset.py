@@ -10,13 +10,19 @@
 # ----------------------------------------------------------------
 
 import cssqc.parser
+from cssyacc.selector import Selector
 
 class Ruleset:
-    def __init__(self, n, b):
-        if n is None:
-            self.name = []
-        else:
-            self.name = n
+    def __init__(self, name, b):
+        self.selectors = []
+        if name is not None:
+            prev = 0
+            for i in range(len(name)):
+                if type(name[i]) is tuple \
+                    and name[i][0] == ',':
+                    self.selectors.append(Selector(name[prev:i], name[i][1]))
+                    prev = i + 1
+            self.selectors.append(Selector(name[prev:len(name)], b.lb_lineno))
         self.block = b
 
         i = cssqc.parser.CSSQC.getInstance()
@@ -24,7 +30,7 @@ class Ruleset:
             i.event(self.__class__.__name__, self)
     
     def __str__(self):
-        return ''.join(map(str, self.name)) + ': ' + str(self.block)
+        return ''.join(map(str, self.selectors)) + ': ' + str(self.block)
     
     def __len__(self):
         return len(self.block)
@@ -32,9 +38,9 @@ class Ruleset:
     def __eq__(self, other):
         if type(self) != type(other):
             return False
-        return self.name == other.name and self.block == other.block
+        return self.selectors == other.selectors and self.block == other.block
 
     def __repr__(self):
-        return '<Ruleset>\n    <Name>\n        ' + '\n        '.join(map(repr, self.name)) \
+        return '<Ruleset>\n    <Name>\n        ' + '\n        '.join(map(repr, self.selectors)) \
             + '\n    </Name>\n' + repr(self.block) + '\n</Ruleset>'
         

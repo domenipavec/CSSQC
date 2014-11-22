@@ -44,7 +44,8 @@ EVENTS = (
     'Comment',
     'Function',
     'Parentheses',
-    'Ruleset',    
+    'Ruleset',
+    'Selector',
     'Statement',
     'Whitespace'
 )

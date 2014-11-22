@@ -23,19 +23,18 @@ class noTagWithClass:
     def __init__(self, data):
         self.ident_re = re.compile(t_IDENT)
 
-    def on_Ruleset(self, rs):
+    def on_Selector(self, s):
         warnings = []
-        for i in range(1,len(rs.name)-1):
+        for i in range(1,len(s.text)-1):
             try:
-                class_name = rs.name[i+1][0]
-                tag_name = rs.name[i-1][0]
-                if isTupleWithValue(rs.name[i], '.') \
+                class_name = s.text[i+1][0]
+                tag_name = s.text[i-1][0]
+                if isTupleWithValue(s.text[i], '.') \
                     and self.ident_re.match(class_name) \
                     and self.ident_re.match(tag_name) \
                     and (i-1 == 0 \
-                        or type(rs.name[i-2]) is Whitespace \
-                        or isTupleWithValue(rs.name[i-2], ',')):
-                    warnings.append(QualityWarning('noTagWithClass', rs.name[i][1], 'Tag with class: ' + tag_name + '.' + class_name))
+                        or type(s.text[i-2]) is Whitespace):
+                    warnings.append(QualityWarning('noTagWithClass', s.text[i][1], 'Tag with class: ' + tag_name + '.' + class_name))
             except:
                 pass
         return warnings
