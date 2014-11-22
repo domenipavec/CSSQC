@@ -19,7 +19,7 @@ class lowercase:
         
 
     def on_IDENT(self, i):
-        if not i.value.islower():
+        if i.value.lower() != i.value:
             return [QualityWarning('lowercase', i.lineno, '"%s" is not lowercase.' % i.value)]
         else:
             return []
@@ -35,7 +35,7 @@ class lowercase:
         for e in rs.name:
             if type(e) is tuple \
                 and e[0][0] == '#' \
-                and not e[0].islower():
+                and e[0].lower() != e[0]:
                 warnings.append(QualityWarning('lowercase', e[1], '"%s" is not lowercase.' % e[0]))
         return warnings
 
@@ -46,6 +46,6 @@ class lowercase:
                 if e[0] == ':':
                     break
                 elif e[0][0] == '#' \
-                    and not e[0].islower():
+                    and e[0].lower() != e[0]:
                     warnings.append(QualityWarning('lowercase', e[1], '"%s" is not lowercase.' % e[0]))
         return warnings
