@@ -28,31 +28,30 @@ def isLast(i, tokens):
 def inspectWhitespaces(data, cb):
     if type(data) is Block:
         for el in data.elements:
-            if not inspectWhitespaces(el, cb):
-                return False
-        if not inspectWhitespaces(data.last, cb):
-            return False
+            i = inspectWhitespaces(el, cb)
+            if i != -1:
+                return i
+        i = inspectWhitespaces(data.last, cb)
+        if i != -1:
+            return i
     elif type(data) is Brackets \
         or type(data) is Parentheses \
         or type(data) is Selector \
         or type(data) is Statement:
         for t in data.text:
-            if not inspectWhitespaces(t, cb):
-                return False
+            i = inspectWhitespaces(t, cb)
+            if i != -1:
+                return i
     elif type(data) is Function:
         for n in data.name:
-            if not inspectWhitespaces(n, cb):
-                return False
+            i = inspectWhitespaces(n, cb)
+            if i != -1:
+                return i
         for t in data.text:
-            if not inspectWhitespaces(t, cb):
-                return False
-    elif type(data) is Ruleset:
-        for s in data.selectors:
-            if not inspectWhitespaces(s, cb):
-                return False
-        if not inspectWhitespaces(data.block, cb):
-            return False
+            i = inspectWhitespaces(t, cb)
+            if i != -1:
+                return i
     elif type(data) is Whitespace:
         if not cb(data):
-            return False
-    return True
+            return data.lineno
+    return -1
