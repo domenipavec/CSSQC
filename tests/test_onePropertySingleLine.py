@@ -30,7 +30,14 @@ span {
 .class2 { margin: 0;
 }
 .class3 { padding:
-            0; }'''
+            0; }
+.class4 {
+    margin: 0;
+    .class5 {
+        padding: 0;
+        color: blue;
+    }
+}'''
         c = self.parse(sample)
 
         self.assertEqual(c.warnings, [

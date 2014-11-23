@@ -10,6 +10,7 @@
 # ----------------------------------------------------------------
 
 from cssyacc.statement import Statement
+from cssyacc.ruleset import Ruleset
 import cssqc.parser
 
 class Block:
@@ -24,7 +25,7 @@ class Block:
         for e in self.elements:
             if type(e) is Statement:
                 self.statements += 1
-            elif type(e) is Block:
+            elif type(e) is Ruleset:
                 self.blocks += 1
         if len(self.last.text) > 0:
             self.statements += 1
