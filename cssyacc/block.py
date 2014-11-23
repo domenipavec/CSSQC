@@ -19,9 +19,22 @@ class Block:
         self.rb_lineno = ln2
         self.last = Statement(t, ln2)
         
+        self.statements = 0
+        self.blocks = 0
+        for e in self.elements:
+            if type(e) is Statement:
+                self.statements += 1
+            elif type(e) is Block:
+                self.blocks += 1
+        if len(self.last.text) > 0:
+            self.statements += 1
+        
         i = cssqc.parser.CSSQC.getInstance()
         if i is not None:
             i.register(self.__class__.__name__, self)
+    
+    def isOneLiner(self):
+        return self.statements <= 1 and self.blocks == 0
     
     def __str__(self):
         return ''.join(map(str, self.elements))
