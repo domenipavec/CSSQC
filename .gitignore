@@ -52,3 +52,8 @@ docs/_build/
 
 # PyBuilder
 target/
+
+# ply stuff
+lextab.py
+parser.out
+parsetab.py

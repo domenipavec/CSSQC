@@ -53,7 +53,12 @@ All rule options (OPT) can be either 'on' or 'off' or one of specified options."
 
     for i in args.input:
         parser = cssqc.parser.CSSQC(config['RULES'])
-        parser.parse(i.read())
+        
+        try:
+            parser.parse(i.read())
+        except Exception as e:
+            print('Error in "%s":' % i.name, str(e))
+            exit()
         
         for w in parser.warnings:
             print('Warning: Rule "%s" broken on line %d in "%s".' %(w.rule, w.line, i.name))

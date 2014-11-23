@@ -164,7 +164,10 @@ def p_empty(p):
 
 # error rule
 def p_error(p):
-    raise Exception("Syntax error at token " + p.type + " on line " + str(p.lineno))
+    if p is not None:
+        raise Exception("Syntax error at token " + p.type + " on line " + str(p.lineno))
+    else:
+        raise Exception("Syntax error at the end of file (missing '}' somewhere?).")
 
 # build the parser
-parser = yacc.yacc(debug=True)
+parser = yacc.yacc()
