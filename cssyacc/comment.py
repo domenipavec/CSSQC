@@ -18,7 +18,7 @@ class Comment:
         
         i = cssqc.parser.CSSQC.getInstance()
         if i is not None:
-            i.event(self.__class__.__name__, self)
+            i.register(self.__class__.__name__, self)
     
     def __str__(self):
         return self.value

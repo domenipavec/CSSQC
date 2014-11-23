@@ -24,10 +24,17 @@ class Ruleset:
                     prev = i + 1
             self.selectors.append(Selector(name[prev:len(name)], b.lb_lineno))
         self.block = b
+        self.depth = 0
 
         i = cssqc.parser.CSSQC.getInstance()
         if i is not None:
-            i.event(self.__class__.__name__, self)
+            i.register(self.__class__.__name__, self)
+    
+    def setDepth(self, d):
+        self.depth = d
+        for el in self.block.elements:
+            if type(el) is Ruleset:
+                el.setDepth(d+1)
     
     def __str__(self):
         return ''.join(map(str, self.selectors)) + ': ' + str(self.block)

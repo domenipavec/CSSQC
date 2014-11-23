@@ -12,6 +12,8 @@
 import importlib
 import csslex, cssyacc
 
+from cssyacc.ruleset import Ruleset
+
 EVENTS = (
     'IDENT',
     'ATKEYWORD',
@@ -63,6 +65,7 @@ class CSSQC:
         self.parser = cssyacc.parser
         self.warnings = []
         self.tokens = []
+        self.objects = []
         self.current_token = 0
         instance = self
     
@@ -98,6 +101,9 @@ class CSSQC:
         for f in self.events[e]:
             self.warnings += f(obj)
     
+    def register(self, name, obj):
+        self.objects.append((name, obj))
+    
     def token(self):
         if len(self.tokens) > self.current_token:
             t = self.tokens[self.current_token]
@@ -107,12 +113,31 @@ class CSSQC:
             return None
     
     def parse(self, data):
+        # lex
         l = csslex.getLexer()
         l.input(data)
+        
+        # parse tokens
         for token in l:
             self.tokens.append(token)
             self.event(token.type, token)
+        
+        # yacc
         result = self.parser.parse(lexer=self)
+        
+        for el in result:
+            if type(el) is Ruleset:
+                el.setDepth(0)
+        
+        # parse objects
+        for obj in self.objects:
+            self.event(obj[0], obj[1])
+            
+        # after parse
         for f in self.afterParse:
             self.warnings += f(result)
+
+        # sort warnings
+        self.warnings.sort(key=lambda qw: qw.line)
+
         return result
