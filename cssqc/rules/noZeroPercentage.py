@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 # ----------------------------------------------------------------
-# cssqc/noZeroUnits.py
+# cssqc/noZeroPercentage.py
 # 
-# Do not allow units after 0 value.
+# Do not allow percentage after 0 value.
 # ----------------------------------------------------------------
 # copyright (c) 2014 - Domen Ipavec
 # Distributed under The MIT License, see LICENSE
@@ -15,14 +15,14 @@ from csslex import ident, flags
 import re
 
 def getHelp():
-    return """Do not allow units after 0 value."""
+    return """Do not allow percentage after 0 value."""
 
-class noZeroUnits:
+class noZeroPercentage:
     def __init__(self, data):
-        self.zero_with_units_re = re.compile(flags + r'(0+|0*\.0+)('+ident+r')')
+        self.zero_with_units_re = re.compile(flags + r'(0+|0*\.0+)(%)')
 
-    def on_DIMENSION(self, i):
+    def on_PERCENTAGE(self, i):
         if self.zero_with_units_re.match(i.value):
-            return [QualityWarning('noZeroUnits', i.lineno, 'A zero with units appears: ' + i.value)]
+            return [QualityWarning('noZeroPercentage', i.lineno, 'A zero with percentage appears: ' + i.value)]
         else:
             return []

@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 # ----------------------------------------------------------------
-# test_noZeroUnits.py
+# test_noZeroPercentage.py
 # 
-# test for noZeroUnits rule
+# test for noZeroPercentage rule
 # ----------------------------------------------------------------
 # copyright (c) 2014 - Domen Ipavec
 # Distributed under The MIT License, see LICENSE
@@ -13,9 +13,9 @@ import unittest
 from cssqc.parser import CSSQC
 from cssqc.qualityWarning import QualityWarning
 
-class Test_noZeroUnits(unittest.TestCase):
+class Test_noZeroPercentage(unittest.TestCase):
     def parse(self, data):
-        c = CSSQC({"noZeroUnits": True})
+        c = CSSQC({"noZeroPercentage": True})
         c.parse(data)
         return c
     
@@ -33,10 +33,6 @@ class Test_noZeroUnits(unittest.TestCase):
     padding-bottom: .0;
 }''')
         self.assertEqual(c.warnings, [
-            QualityWarning('noZeroUnits', 4),
-            QualityWarning('noZeroUnits', 5),
-            QualityWarning('noZeroUnits', 6),
-            QualityWarning('noZeroUnits', 8),
-            QualityWarning('noZeroUnits', 9),
-            QualityWarning('noZeroUnits', 10),
+            QualityWarning('noZeroPercentage', 3),
+            QualityWarning('noZeroPercentage', 7)
         ])
