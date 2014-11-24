@@ -53,6 +53,12 @@ def inspectWhitespaces(data, cb):
             return data.lineno
     return -1
 
+def isSpacesOnly(v):
+    for x in v:
+        if x != ' ':
+            return False
+    return True
+
 def isProperty(s):
     i = 0
     # property name

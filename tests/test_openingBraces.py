@@ -15,7 +15,7 @@ from cssqc.qualityWarning import QualityWarning
 
 class Test_openingBraces(unittest.TestCase):
     def parse(self, data):
-        c = CSSQC({"openingBraces": "on"})
+        c = CSSQC({"openingBraces": "exact"})
         c.parse(data)
         return c
 

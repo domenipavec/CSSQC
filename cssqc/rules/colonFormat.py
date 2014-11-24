@@ -13,7 +13,7 @@
 from cssqc.qualityWarning import QualityWarning
 from csslex import t_IDENT
 from cssyacc import Whitespace, Statement, Ruleset
-from cssqc.helpers import isTupleWithValue, isLast
+from cssqc.helpers import isTupleWithValue, isLast, isSpacesOnly
 
 import re
 
@@ -110,9 +110,8 @@ class colonFormat:
                 and self.ws_after.value == ' '):
                 return False
             
-            for x in self.ws_before.value:
-                if x != ' ':
-                    return False
+            if not isSpacesOnly(self.ws_before.value):
+                return False
             
             self.align_length = len(s.text[0][0]) + len(self.ws_before.value)
             
@@ -125,9 +124,8 @@ class colonFormat:
                 and self.ws_after.value == ' '):
                 return False
             
-            for x in self.ws_before.value:
-                if x != ' ':
-                    return False
+            if not isSpacesOnly(self.ws_before.value):
+                return False
                 
             if len(s.text[0][0]) + len(self.ws_before.value) == self.align_length:
                 return True
