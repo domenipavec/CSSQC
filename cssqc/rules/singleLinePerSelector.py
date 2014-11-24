@@ -23,17 +23,16 @@ class singleLinePerSelector:
         pass
 
     def on_Selector(self, s):
+        warnings = []
         for i in range(len(s.text)):
             if i == 0 \
                 and type(s.text[i]) is Whitespace:
                 continue
-            if i == len(s.text) \
+            if i == len(s.text) - 1 \
                 and type(s.text[i]) is Whitespace:
                 continue
-            ln = inspectWhitespaces(s, lambda ws: '\n' not in ws.value)
-            if ln != -1 \
-                and not (type(s.text[-1]) is Whitespace \
-                    and s.text[-1].lineno == ln):
-                return [QualityWarning('singleLinePerSelector', ln, 'Selector over multiple lines.')]
-            else:
-                return []
+            ln = inspectWhitespaces(s.text[i], lambda ws: '\n' not in ws.value)
+            if ln != -1:
+                warnings.append(QualityWarning('singleLinePerSelector', ln, \
+                    'Selector over multiple lines.'))
+        return warnings

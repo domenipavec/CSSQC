@@ -33,6 +33,10 @@ class Test_singleLinePerSelector(unittest.TestCase):
 .class3 {
     padding: 0;
 }
+.class4,
+.class5 {
+    color: red;
+}
 '''
         c = self.parse(sample)
 
