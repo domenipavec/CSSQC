@@ -40,10 +40,7 @@ class openingBraces:
         firstElement = None
         if len(rs.block.elements) > 0:
             firstElement = rs.block.elements[0]
-        elif len(rs.block.last.text) > 0:
-            firstElement = rs.block.last.text[0]
-        if not (firstElement is not None \
-            and type(firstElement) is Whitespace \
+        if not (type(firstElement) is Whitespace \
             and ((rs.block.isOneLiner() \
                     and ((self.exact and firstElement.value == ' ') \
                          or (not self.exact and isSpacesOnly(firstElement.value)))) \
