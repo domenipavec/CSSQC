@@ -20,6 +20,9 @@ class Statement:
         else:
             self.text = t
 
+        if len(self.text) == 0:
+            raise Exception('Empty statement on line %d.' % self.lineno)
+
         i = cssqc.parser.CSSQC.getInstance()
         if i is not None:
             i.register(self.__class__.__name__, self)
