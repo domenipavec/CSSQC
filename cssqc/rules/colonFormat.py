@@ -12,7 +12,7 @@
 
 from cssqc.qualityWarning import QualityWarning
 from csslex import t_IDENT
-from cssyacc import Whitespace, Statement
+from cssyacc import Whitespace, Statement, Ruleset
 from cssqc.helpers import isTupleWithValue, isLast
 
 import re
@@ -104,7 +104,6 @@ class colonFormat:
 
     def colonFormatAlign(self, s):
         if self.align_reset:
-            self.align_reset = False
             
             if not(self.ws_before is not None \
                 and self.ws_after is not None \
@@ -117,10 +116,10 @@ class colonFormat:
             
             self.align_length = len(s.text[0][0]) + len(self.ws_before.value)
             
-            self.align_init = True
+            self.align_reset = False
             
             return True
-        elif self.align_init:
+        else:
             if not(self.ws_before is not None \
                 and self.ws_after is not None \
                 and self.ws_after.value == ' '):
@@ -134,13 +133,10 @@ class colonFormat:
                 return True
             else:
                 return False
-        else:
-            return False
 
     def on_Ruleset(self, rs):
         warnings = []
         self.align_reset = True
-        self.align_init = False
         for el in rs.block.elements:
             if type(el) is Statement \
                 and self.isProperty(el):
@@ -157,5 +153,6 @@ class colonFormat:
                 else:
                     warnings.append(QualityWarning('colonFormat', el.lineno, \
                         'Wrong formatted colon in statement.'))
-        
+            elif type(el) is Ruleset:
+                self.align_reset = True
         return warnings
