@@ -58,6 +58,8 @@ All rule options (OPT) can be either 'on' or 'off' or one of specified options."
             parser.parse(i.read())
         except Exception as e:
             print('Error in "%s":' % i.name, str(e))
+            if args.verbose:
+                raise e
             exit()
         
         for w in parser.warnings:
