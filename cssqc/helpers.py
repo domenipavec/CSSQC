@@ -52,3 +52,32 @@ def inspectWhitespaces(data, cb):
         if not cb(data):
             return data.lineno
     return -1
+
+def isProperty(s):
+    i = 0
+    # property name
+    if not (type(s.text[i]) is tuple \
+            and len(s.text[i][0]) > 1) \
+        or isLast(i, s.text):
+        return False
+    i += 1
+    # optional ws
+    if type(s.text[i]) is Whitespace:
+        if isLast(i, s.text):
+            return False
+        i += 1
+    # colon
+    if not isTupleWithValue(s.text[i], ':') \
+        or isLast(i, s.text):
+        return False
+    i += 1
+    # optional ws
+    if type(s.text[i]) is Whitespace:
+        if isLast(i, s.text):
+            return False
+        i += 1
+    # value
+    if not type(s.text[i]) is tuple:
+        return False
+    else:
+        return True
