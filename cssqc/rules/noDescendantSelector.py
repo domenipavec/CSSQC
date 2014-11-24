@@ -21,13 +21,6 @@ class noDescendantSelector:
     def __init__(self, data):
         pass
 
-    def lastInRuleOrHasChild(self, i, l):
-        return isLast(i, l) \
-            or isTupleWithValue(l[i+1], '>') \
-            or (type(l[i+1]) is Whitespace \
-                and (isLast(i+1, l)
-                    or isTupleWithValue(l[i+2], '>')))
-
     def on_Selector(self, s):
         descendant = False
         att = False
