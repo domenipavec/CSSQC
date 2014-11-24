@@ -250,6 +250,7 @@ perspective-origin
 pitch
 pitch-range
 play-during
+pointer-events
 position
 presentation-level
 quotes
@@ -275,6 +276,7 @@ speak-header
 speak-numeral
 speak-punctuation
 speech-rate
+src
 stress
 string-set
 tab-size
@@ -311,6 +313,7 @@ transition-duration
 transition-property
 transition-timing-function
 unicode-bidi
+user-select
 vertical-align
 visibility
 voice-balance
