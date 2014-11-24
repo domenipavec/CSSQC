@@ -120,41 +120,38 @@ class Test_hexFormat(unittest.TestCase):
         }
         c = self.parse(sample, l)
         warnings = []
-        for i in l:
+        for i in l.split(','):
             for w in warnings_dict[i]:
                 if w not in warnings:
                     warnings.append(w)
         self.assertItemsEqual(c.warnings, warnings)
     
-    def test_nothing(self):
-        self.parseSample([])
-    
     def test_long(self):
-        self.parseSample(['long'])
+        self.parseSample('long')
     
     def test_short(self):
-        self.parseSample(['short'])
+        self.parseSample('short')
     
     def test_lowercase(self):
-        self.parseSample(['lowercase'])
+        self.parseSample('lowercase')
     
     def test_uppercase(self):
-        self.parseSample(['uppercase'])
+        self.parseSample('uppercase')
     
     def test_validate(self):
-        self.parseSample(['validate'])
+        self.parseSample('validate')
 
     def test_combinations(self):
         cs = (('long', 'short'), ('lowercase', 'uppercase'))
         for i in range(3):
             for j in range(3):
                 for k in range(2):
-                    l = []
+                    l = ""
                     if i < 2:
-                        l.append(cs[0][i])
+                        l += ',' + cs[0][i]
                     if j < 2:
-                        l.append(cs[1][j])
+                        l += ',' + cs[1][j]
                     if k < 1:
-                        l.append('validate')
+                        l += ',validate'
                     if len(l) > 1:
-                        self.parseSample(l)
+                        self.parseSample(l[1:])

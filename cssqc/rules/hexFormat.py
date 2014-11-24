@@ -22,11 +22,12 @@ def getHelp():
 'long' (must be 6 characters long)
 'short' (must be 3 characters when possible)
 'lowercase', 'uppercase' and
-'validate' (must be 3 or 6 characters long)."""
+'validate' (must be 3 or 6 characters long). Options can be comma separated."""
 
 class hexFormat:
     def __init__(self, data):
         self.on_Parentheses = self.on_Function
+        data = data.split(',')
         if 'long' in data:
             self.check_long = True
         else:
