@@ -14,6 +14,8 @@ import csslex, cssyacc
 
 from cssyacc.ruleset import Ruleset
 
+from cssqc.statistics import Statistics
+
 EVENTS = (
     'IDENT',
     'ATKEYWORD',
@@ -67,6 +69,10 @@ class CSSQC:
         self.tokens = []
         self.objects = []
         self.current_token = 0
+        
+        self.statistics = Statistics()
+        self.addRuleObject(self.statistics)
+        
         instance = self
     
     @staticmethod

@@ -22,7 +22,7 @@ Rule options on command line override those in configuration file.
 All rule options (OPT) can be either 'on' or 'off' or one of specified options.""")
     parser.add_argument('--input', '-i', nargs='+', type=argparse.FileType('r'), help='Input css or less file(s).', required=True)
     parser.add_argument('--config', '-c', help='Configuration file.', type=argparse.FileType('r'))
-    parser.add_argument('--verbose', '-v', help='More verbose output.', action='store_true')
+    parser.add_argument('--verbose', '-v', help='More verbose output with some statistics.', action='store_true')
     
     rules = []
     
@@ -67,7 +67,19 @@ All rule options (OPT) can be either 'on' or 'off' or one of specified options."
 
         lines = parser.tokens[-1].lineno
         warnings = len(parser.warnings)
-        report.append('File "%s": %d warnings on %d lines (q=%.2f)' %(i.name, warnings, lines, (1.-float(warnings)/lines)*100)) 
+        q = (1.-float(warnings)/parser.statistics.properties.total)*100
+        if args.verbose:
+            report.append('File "%s":' % i.name)
+            report.append('  Lines:      %4d' % lines)
+            report.append('  Warnings:   %4d' % warnings)
+            report.append('  Quality:    %7.2f' % q)
+            report.append('  IDs:        %4d styled,    %4d unique' % parser.statistics.ids.pair())
+            report.append('  Classes:    %4d styled,    %4d unique' % parser.statistics.classes.pair())
+            report.append('  Tags:       %4d styled,    %4d unique' % parser.statistics.tags.pair())
+            report.append('  Selectors:  %4d used,      %4d unique' % parser.statistics.selectors.pair())
+            report.append('  Properties: %4d specified, %4d unique' % parser.statistics.properties.pair())
+        else:
+            report.append('File "%s": %d warnings on %d lines (q=%.2f)' %(i.name, warnings, lines, q))
     
     print('===================================================================')
     print('\n'.join(report))
