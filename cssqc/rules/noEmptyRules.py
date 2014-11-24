@@ -20,8 +20,6 @@ class noEmptyRules:
         pass
 
     def on_Ruleset(self, rs):
-        if len(rs.block.last) != 0:
-            return []
         for element in rs.block.elements:
             if not (type(element) is Whitespace or type(element) is Comment):
                 return []

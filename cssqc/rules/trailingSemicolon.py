@@ -20,8 +20,8 @@ class trailingSemicolon:
     def __init__(self, data):
         pass
 
-    def on_Ruleset(self, rs):
-        if len(rs.block.last.text) > 0:
-            return [QualityWarning('trailingSemicolon', rs.block.rb_lineno, 'Should have semicolon at the end.')]
+    def on_Statement(self, s):
+        if not s.semicolon:
+            return [QualityWarning('trailingSemicolon', s.lineno, 'Should have semicolon at the end.')]
         else:
             return []

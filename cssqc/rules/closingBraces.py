@@ -23,9 +23,7 @@ class closingBraces:
 
     def on_Ruleset(self, rs):
         lastElement = None
-        if len(rs.block.last.text) > 0:
-            lastElement = rs.block.last.text[-1]
-        elif len(rs.block.elements) > 0:
+        if len(rs.block.elements) > 0:
             lastElement = rs.block.elements[-1]
         
         if not (lastElement is not None \

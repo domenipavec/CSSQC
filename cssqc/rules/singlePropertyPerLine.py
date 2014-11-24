@@ -38,8 +38,4 @@ class singlePropertyPerLine:
                     warnings.append(QualityWarning('singlePropertyPerLine', el.block.lb_lineno, \
                         'No new line before this ruleset.'))
                 nl = False
-        if len(rs.block.last.text) > 0 \
-            and not nl:
-            warnings.append(QualityWarning('singlePropertyPerLine', rs.block.rb_lineno, \
-                'No new line before last statement.'))
         return warnings

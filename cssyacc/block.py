@@ -11,6 +11,8 @@
 
 from cssyacc.statement import Statement
 from cssyacc.ruleset import Ruleset
+from cssyacc.comment import Comment
+from cssyacc.whitespace import Whitespace
 import cssqc.parser
 
 class Block:
@@ -18,7 +20,18 @@ class Block:
         self.elements = el
         self.lb_lineno = ln1
         self.rb_lineno = ln2
-        self.last = Statement(t, ln2)
+        
+        if t is not None \
+            and len(t) > 0:
+            
+            # remove trailing ws and comments from t
+            # make t a statement and append everything
+            following = []
+            while type(t[-1]) is Whitespace \
+                or type(t[-1]) is Comment:
+                following.append(t.pop())
+            self.elements.append(Statement(t, ln2, False))
+            self.elements += following
         
         self.statements = 0
         self.blocks = 0
@@ -27,8 +40,6 @@ class Block:
                 self.statements += 1
             elif type(e) is Ruleset:
                 self.blocks += 1
-        if len(self.last.text) > 0:
-            self.statements += 1
         
         i = cssqc.parser.CSSQC.getInstance()
         if i is not None:
@@ -47,10 +58,8 @@ class Block:
         if type(self) != type(other):
             return False
         return self.elements == other.elements\
-            and self.last == other.last \
             and self.lb_lineno == other.lb_lineno \
             and self.rb_lineno == other.rb_lineno
 
     def __repr__(self):
         return '<Block>\n    ' + '\n    '.join(map(repr, self.elements)) + '\n</Block>'
-        

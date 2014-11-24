@@ -31,9 +31,6 @@ def inspectWhitespaces(data, cb):
             i = inspectWhitespaces(el, cb)
             if i != -1:
                 return i
-        i = inspectWhitespaces(data.last, cb)
-        if i != -1:
-            return i
     elif type(data) is Brackets \
         or type(data) is Parentheses \
         or type(data) is Selector \

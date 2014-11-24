@@ -59,8 +59,7 @@ class indentation:
 
             # last whitespace is for closing brace
             if isLast(i, rs.block.elements) \
-                and type(el) is Whitespace \
-                and len(rs.block.last.text) == 0:
+                and type(el) is Whitespace:
                 if not (('\n' not in el.value) or el.value.endswith('\n'+self.indent*rs.depth)):
                     warnings.append(QualityWarning('indentation', el.lineno+1, \
                         'Incorect indentation of closing braces.'))
@@ -69,9 +68,7 @@ class indentation:
             elif type(el) is Whitespace:
                 if not (('\n' not in el.value) or el.value.endswith('\n'+self.indent*(rs.depth+1))):
                     nextElement = None
-                    if isLast(i, rs.block.elements):
-                        nextElement = rs.block.last
-                    else:
+                    if not isLast(i, rs.block.elements):
                         nextElement = rs.block.elements[i+1]
                     
                     if type(nextElement) is Statement \
@@ -103,21 +100,5 @@ class indentation:
                 if ln != -1:
                     warnings.append(QualityWarning('indentation', ln+1, \
                         'Incorect indentation in block.'))
-        
-        # parse last statement of block
-        for i in range(len(rs.block.last.text)):
-            el = rs.block.last.text[i]
-            
-            if isLast(i, rs.block.last.text) \
-                and type(el) is Whitespace:
-                if not (('\n' not in el.value) or el.value.endswith('\n'+self.indent*rs.depth)):
-                    warnings.append(QualityWarning('indentation', el.lineno+1, \
-                        'Incorect indentation in last statement.'))
-            else:
-                ln = inspectWhitespaces(el, \
-                    lambda ws: (not '\n' in ws.value) or ws.value.endswith('\n'+self.indent*(rs.depth+1)))
-                if ln != -1:
-                    warnings.append(QualityWarning('indentation', ln+1, \
-                        'Incorect indentation of closing braces.'))
             
         return warnings

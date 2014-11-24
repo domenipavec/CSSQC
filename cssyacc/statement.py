@@ -12,8 +12,9 @@
 import cssqc.parser
 
 class Statement:
-    def __init__(self, t, ln):
+    def __init__(self, t, ln, sc=True):
         self.lineno = ln
+        self.semicolon = sc
         if t is None:
             self.text = []
         else:
@@ -33,7 +34,8 @@ class Statement:
         if type(self) != type(other):
             return False
         return self.text == other.text \
-            and self.lineno == other.lineno
+            and self.lineno == other.lineno \
+            and self.semicolon == other.semicolon
   
     def __repr__(self):
         return '<Statement>\n    ' + '\n    '.join(map(repr, self.text)) + '\n</Statement>'
