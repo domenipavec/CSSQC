@@ -29,6 +29,6 @@ setup(
     },
 
     package_data={
-        'cssqc': ['defaults.cfg', 'order/*.dat']
+        'cssqc': ['defaults.cfg', 'order/*.dat', 'group/*.dat']
     }
 )
