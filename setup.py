@@ -22,7 +22,7 @@ class buildPly(test):
 setup(
     name='CSSQC',
     
-    version='0.1',
+    version='0.2',
     
     packages=['csslex', 'cssyacc', 'cssqc', 'cssqc.rules'],
     
