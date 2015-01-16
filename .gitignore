@@ -54,6 +54,4 @@ docs/_build/
 target/
 
 # ply stuff
-lextab.py
 parser.out
-parsetab.py
