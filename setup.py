@@ -10,6 +10,14 @@
 # ----------------------------------------------------------------
 
 from setuptools import setup, find_packages
+from setuptools.command.test import test
+
+class buildPly(test):
+    def run(self):
+        import csslex, cssyacc
+        csslex._build()
+        cssyacc._build()
+        test.run(self)
 
 setup(
     name='CSSQC',
@@ -26,6 +34,10 @@ setup(
         'console_scripts': [
             'cssqc=cssqc:main'
         ]
+    },
+        
+    cmdclass={
+        'test': buildPly
     },
 
     package_data={

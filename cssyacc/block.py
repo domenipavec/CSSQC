@@ -13,10 +13,11 @@ from cssyacc.statement import Statement
 from cssyacc.ruleset import Ruleset
 from cssyacc.comment import Comment
 from cssyacc.whitespace import Whitespace
-import cssqc.parser
 
 class Block:
     def __init__(self, el, t, ln1, ln2):
+        import cssqc.parser
+        
         self.elements = el
         self.lb_lineno = ln1
         self.rb_lineno = ln2

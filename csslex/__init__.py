@@ -141,8 +141,12 @@ t_BAD_COMMENT.__doc__ = flags + badcomment
 def t_error(t):
     pass
     
-# build lexer
-lexer = lex.lex()
+def _build():
+    try:
+        os.remove("csslex/lextab.py")
+    except:
+        pass
+    lex.lex(optimize=1, lextab="csslex.lextab", outputdir="csslex")
 
 def getLexer():
-    return lexer.clone()
+    return lex.lex(optimize=1, lextab="csslex.lextab").clone()

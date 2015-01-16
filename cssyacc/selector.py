@@ -9,10 +9,10 @@
 # Distributed under The MIT License, see LICENSE
 # ----------------------------------------------------------------
 
-import cssqc.parser
-
 class Selector:
     def __init__(self, t, ln):
+        import cssqc.parser
+        
         self.lineno = ln
         if t is None:
             self.text = []

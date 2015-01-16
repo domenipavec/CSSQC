@@ -9,10 +9,10 @@
 # Distributed under The MIT License, see LICENSE
 # ----------------------------------------------------------------
 
-import cssqc.parser
-
 class Whitespace:
     def __init__(self, v, ln):
+        import cssqc.parser
+        
         self.lineno = ln
         if v is None:
             self.value = ''

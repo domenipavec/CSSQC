@@ -9,11 +9,12 @@
 # Distributed under The MIT License, see LICENSE
 # ----------------------------------------------------------------
 
-import cssqc.parser
 from cssyacc.selector import Selector
 
 class Ruleset:
     def __init__(self, name, b):
+        import cssqc.parser
+        
         self.selectors = []
         if name is not None:
             prev = 0

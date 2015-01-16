@@ -29,7 +29,7 @@ from cssyacc.brackets import Brackets
 class TestCssyacc(unittest.TestCase):
     def build_parser(self):
         self.lexer = csslex.getLexer()
-        self.parser = cssyacc.parser
+        self.parser = cssyacc.getYacc()
     
     def parse(self, s, r):
         print("Test string: ", s)

@@ -9,10 +9,10 @@
 # Distributed under The MIT License, see LICENSE
 # ----------------------------------------------------------------
 
-import cssqc.parser
-
 class Statement:
     def __init__(self, t, ln, sc=True):
+        import cssqc.parser
+
         self.lineno = ln
         self.semicolon = sc
         if t is None:

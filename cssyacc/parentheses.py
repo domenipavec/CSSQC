@@ -9,10 +9,10 @@
 # Distributed under The MIT License, see LICENSE
 # ----------------------------------------------------------------
 
-import cssqc.parser
-
 class Parentheses:
     def __init__(self, t, ln1, ln2):
+        import cssqc.parser
+        
         self.lp_lineno = ln1
         self.rp_lineno = ln2
         if t is None:

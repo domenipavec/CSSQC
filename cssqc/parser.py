@@ -64,7 +64,7 @@ class CSSQC:
             self.events[e] = []
         self.afterParse = []
         self.addRules(rules)
-        self.parser = cssyacc.parser
+        self.parser = cssyacc.getYacc()
         self.warnings = []
         self.tokens = []
         self.objects = []

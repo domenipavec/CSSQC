@@ -9,10 +9,10 @@
 # Distributed under The MIT License, see LICENSE
 # ----------------------------------------------------------------
 
-import cssqc.parser
-
 class Comment:
     def __init__(self, v, ln):
+        import cssqc.parser
+        
         self.value = v
         self.lineno = ln
         

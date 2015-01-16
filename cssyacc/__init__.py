@@ -21,7 +21,7 @@ from cssyacc.block import Block
 from cssyacc.ruleset import Ruleset
 from cssyacc.function import Function
 from cssyacc.brackets import Brackets
-
+    
 # grammer rules
 def p_stylesheet(p):
     '''stylesheet : empty
@@ -169,5 +169,12 @@ def p_error(p):
     else:
         raise Exception("Syntax error at the end of file (missing '}' somewhere?).")
 
-# build the parser
-parser = yacc.yacc()
+def _build():
+    try:
+        os.remove("cssyacc/parsetab.py")
+    except:
+        pass
+    yacc.yacc(optimize=1, tabmodule="cssyacc.parsetab", outputdir="cssyacc")
+
+def getYacc():    
+    return yacc.yacc(optimize=1, tabmodule="cssyacc.parsetab")
