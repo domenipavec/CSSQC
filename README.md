@@ -1,7 +1,7 @@
 CSS-Quality-Control
 ===================
 
-This program was written as part of the Celtra programming contest. The report and more about how the program works can be found on my [website](http://z-v.si/en/celtra-programming-contest-2014).
+This program was written as part of the Celtra programming contest. The report and more about how the program works can be found on my [website](http://domen.ipavec.net/en/celtra-programming-contest-2014).
 
 ## Installation
 
